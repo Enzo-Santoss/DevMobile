@@ -1,0 +1,7 @@
+{
+  "name": "NutriAI",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

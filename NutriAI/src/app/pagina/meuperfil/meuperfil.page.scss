@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&display=swap');
+h1{
+    color: rgb(81, 119, 245);
+    font-family: 'Poppins,sans-serif';
+    text-align: center;
+    font-size: 27px;
+}
+p{
+    font-family: 'Poppins,sans-serif';
+    text-align: center;
+    font-size: 18px;
+    color: rgb(116, 3, 97);
+}
+.input {
+  display: flex;
+  gap: 10px; /* espaço entre os inputs */
+  padding: 2%;
+}
+
+.input ion-textarea {
+  flex: 1; /* faz os dois ocuparem o mesmo espaço */
+  border-radius: 12px;
+  overflow: hidden;
+}
+.inputt {
+  display: flex;
+  gap: 10px; /* espaço entre os inputs */
+  padding: 2%;
+}
+
+.inputt ion-textarea {
+  flex: 1; /* faz os dois ocuparem o mesmo espaço */
+  border-radius: 12px;
+  overflow: hidden;
+}
+.input ion-textarea {
+  --border-radius: 12px; /* forma recomendada no Ionic */
+  --border-color: #28a745; /* cor da borda */
+  --border-width: 2px;     /* espessura da borda */
+}
+.inputt ion-textarea {
+  --border-radius: 12px; /* forma recomendada no Ionic */
+  --border-color: #28a745; /* cor da borda */
+  --border-width: 2px;     /* espessura da borda */
+}

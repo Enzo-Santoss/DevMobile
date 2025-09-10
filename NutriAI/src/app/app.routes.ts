@@ -1,0 +1,38 @@
+import { Routes } from '@angular/router';
+
+export const routes: Routes = [
+  {
+    path: '',
+    redirectTo: '/home',
+    pathMatch: 'full',
+  },
+  {
+    path: 'folder/:id',
+    loadComponent: () =>
+      import('./folder/folder.page').then((m) => m.FolderPage),
+  },
+  {
+    path: 'home',
+    loadComponent: () => import('./pagina/home/home.page').then( m => m.HomePage)
+  },
+  {
+    path: 'dashboard',
+    loadComponent: () => import('./pagina/dashboard/dashboard.page').then( m => m.DashboardPage)
+  },
+  {
+    path: 'meuperfil',
+    loadComponent: () => import('./pagina/meuperfil/meuperfil.page').then( m => m.MeuperfilPage)
+  },
+  {
+    path: 'cardapio',
+    loadComponent: () => import('./pagina/cardapio/cardapio.page').then( m => m.CardapioPage)
+  },
+  {
+    path: 'reconhecer',
+    loadComponent: () => import('./pagina/reconhecer/reconhecer.page').then( m => m.ReconhecerPage)
+  },
+  {
+    path: 'hidratacao',
+    loadComponent: () => import('./pagina/hidratacao/hidratacao.page').then( m => m.HidratacaoPage)
+  },
+];
