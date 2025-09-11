@@ -5,20 +5,69 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content >
+<ion-content>
   <h1>Meu Perfil 👤</h1>
   <p>Configure suas Informações para recomendações personalizadas</p>
   <ion-toolbar>
-    <ion-title class="ion-padding">Informações Pessoais</ion-title>
+    <ion-title><img src="/assets/user.png" width="25px" height="25px"> Informações Pessoais</ion-title>
   </ion-toolbar>
   <div class="input">
     <ion-textarea label="Idade 🦰" labelPlacement="floating" fill="solid" placeholder="Ex:25"></ion-textarea>
     <ion-textarea label="Altura (cm) 📏" labelPlacement="floating" fill="solid" placeholder="Ex:1.70"></ion-textarea>
   </div>
   <div class="inputt">
-    <ion-textarea label="Peso Atual (kg) ⚖️" labelPlacement="floating" fill="solid" placeholder="Ex:90.1"></ion-textarea>
-    <ion-textarea label="Peso Desejado (Kg) 🎯" labelPlacement="floating" fill="solid" placeholder="Ex:70.0"></ion-textarea>
+    <ion-textarea label="Peso Atual (kg) ⚖️" labelPlacement="floating" fill="solid"
+      placeholder="Ex:90.1"></ion-textarea>
+    <ion-textarea label="Peso Desejado (Kg) 🎯" labelPlacement="floating" fill="solid"
+      placeholder="Ex:70.0"></ion-textarea>
   </div>
+  <ion-toolbar>
+    <ion-title><img src="/assets/alvo.png" width="25px" height="25px"> Seus Objetivos</ion-title>
+  </ion-toolbar>
+
+  <div class="cardd">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Ganhar Massa</ion-card-title>
+        <ion-card-subtitle>Aumentar peso e músculos</ion-card-subtitle>
+        <img src="/assets/musculo.png" width="33px" height="30px">
+      </ion-card-header>
+      <ion-button fill="clear">Ganhar</ion-button>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Perder Peso</ion-card-title>
+        <ion-card-subtitle>Reduzir gordura corporal</ion-card-subtitle>
+        <img src="/assets/alvo.png" width="33px" height="30px">
+      </ion-card-header>
+      <ion-button fill="clear">Perder</ion-button>
+    </ion-card>
   
+
+    <ion-card >
+      <ion-card-header>
+        <ion-card-title>Manter Peso</ion-card-title>
+        <ion-card-subtitle>Nutrição personalizadas  </ion-card-subtitle>
+        <img src="/assets/balaca.png" width="33px" height="30px">
+      </ion-card-header>
+      <ion-button fill="clear">Manter</ion-button>
+    </ion-card>
+  </div>
+  <div>
+    <ion-toolbar>
+    <ion-title> <img src="/assets/pulso.png" width="25px" height="25px"> Nível de Atividade Física</ion-title>
+    </ion-toolbar>
+    <ion-list>
+      <ion-item class="nivel">
+        <ion-select  interface="popover" placeholder="Selecione seu nível de atividade">
+        <ion-select-option>Sedentário - Pouco ou nenhum exercício</ion-select-option>
+        <ion-select-option>Leve - Exercício leve 1-3 dias/semana</ion-select-option>
+        <ion-select-option>Moderado - Exercício moderado 3-5 dias/semana</ion-select-option>
+        <ion-select-option>Intenso - Exercício pesado 6-7 dias/semana</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+  </div>
 
 </ion-content>

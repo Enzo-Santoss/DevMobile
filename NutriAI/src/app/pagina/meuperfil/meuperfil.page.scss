@@ -9,7 +9,7 @@ p{
     font-family: 'Poppins,sans-serif';
     text-align: center;
     font-size: 18px;
-    color: rgb(116, 3, 97);
+    color: rgb(68, 67, 68);
 }
 .input {
   display: flex;
@@ -43,3 +43,27 @@ p{
   --border-color: #28a745; /* cor da borda */
   --border-width: 2px;     /* espessura da borda */
 }
+.cardd {
+  display: flex;
+  gap: 4px;
+  border-radius: 15px;
+}
+ion-card{
+  width: 90px;
+  height: 200px;
+  flex: 1;
+  text-align: center;
+}
+ion-card  img{
+  margin: auto;
+}
+
+ion-button{
+  color: #28a745;
+}
+ion-button:hover{
+  background-color: #28a745;
+  color: rgb(0, 0, 0);
+  border-radius: 10px;
+}
+
