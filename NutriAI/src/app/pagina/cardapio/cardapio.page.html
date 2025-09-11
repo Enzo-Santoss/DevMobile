@@ -30,44 +30,52 @@
   <ion-card value="ganhar" *ngIf="escolhar=='ganhar'">
       <ion-card-header>
         <ion-card-title>Ganhar Massa</ion-card-title>
-        <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
+        <ion-card-subtitle>Aumento de massa</ion-card-subtitle>
       </ion-card-header>
       <ion-card-content>
         <ion-list>
           <ion-item>
             <ion-thumbnail slot="start">
               <img
-                src="https://ionicframework.com/docs/img/demos/thumbnail.svg"
+                src="./assets/cafe.jpg"
               />
             </ion-thumbnail>
-            <ion-label>Item</ion-label>
+            <ion-label>Café da Manhã</ion-label>
+              <ion-card-content  class="p">Omelete de claras + ovos inteiros (ex: 3 claras + 1 ovo) com espinafre + aveia + banana + leite ou iogurte natural</ion-card-content>
+                <ion-badge color="warning">90 kcal</ion-badge>
           </ion-item>
 
           <ion-item>
             <ion-thumbnail slot="start">
               <img
-                src="https://ionicframework.com/docs/img/demos/thumbnail.svg"
+                src="./assets/almoco.jpg"
               />
             </ion-thumbnail>
-            <ion-label>Item</ion-label>
+            <ion-label>Almoço</ion-label>
+              <ion-card-content class="p">Frango grelhado ou peito de peru ou filé de peixe + arroz integral ou batata doce + legumes variados + azeite de oliva ou abacate</ion-card-content>
+                <ion-badge color="warning">90 kcal</ion-badge>
           </ion-item>
 
           <ion-item>
             <ion-thumbnail slot="start">
               <img
-                src="https://ionicframework.com/docs/img/demos/thumbnail.svg"
+                src="./assets/tarde.jpg"
               />
             </ion-thumbnail>
-            <ion-label>Item</ion-label>
+            <ion-label>Lanche da Tarde</ion-label>
+              <ion-card-content class="p">Shake de proteína (whey ou outro, se usar), ou iogurte grego + castanhas ou pasta de amendoim + fruta ou torradas integrais + ovo cozido, por exemplo</ion-card-content>
+                <ion-badge color="warning">90 kcal</ion-badge>
           </ion-item>
 
           <ion-item lines="none">
             <ion-thumbnail slot="start">
               <img
-                src="https://ionicframework.com/docs/img/demos/thumbnail.svg"
+                src="./assets/janta.jpg"
               />
             </ion-thumbnail>
-            <ion-label>Item</ion-label>
+            <ion-label>Jantar</ion-label>
+              <ion-card-content class="p">Carne vermelha magra ou peixe (salmão, tilápia, etc.) + quinoa ou mandioca ou batata doce + salada verde + legumes cozidos ou no vapor + óleo saudável ou sementes</ion-card-content>
+                <ion-badge color="warning">90 kcal</ion-badge>
           </ion-item>
         </ion-list>
       </ion-card-content>
