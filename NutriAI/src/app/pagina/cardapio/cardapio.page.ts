@@ -10,7 +10,7 @@ import { barbell, basket, call, globe, heart, home, man, person, pin, star, tras
   templateUrl: './cardapio.page.html',
   styleUrls: ['./cardapio.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule,IonMenuButton,IonSegment,IonSegmentButton,IonLabel,IonSegmentView,IonSegmentContent,IonIcon,IonList,IonCard,IonCardContent,IonCardHeader,IonCardSubtitle,IonCardTitle,IonItem,IonThumbnail,IonBadge]
+  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule,IonMenuButton,IonSegment,IonSegmentButton,IonLabel,IonSegmentView,IonSegmentContent,IonIcon,IonList,IonCard,IonCardContent,IonCardHeader,IonCardSubtitle,IonCardTitle,IonItem ,IonThumbnail,IonBadge,]
 })
 export class CardapioPage implements OnInit {
 

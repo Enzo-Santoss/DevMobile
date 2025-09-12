@@ -5,6 +5,44 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content >
+<ion-content class="ion-padding">
+
+  <!-- Card de Hidratação -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        <ion-icon name="water"></ion-icon> Hidratação
+      </ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <h2>
+        {{ (consumoAtual / 1000) | number:'1.1-1' }}L /
+        {{ metaDiaria / 1000 }}L
+      </h2>
+
+      <ion-progress-bar
+        [value]="consumoAtual / metaDiaria"
+        color="primary">
+      </ion-progress-bar>
+
+      <p>{{ (consumoAtual / metaDiaria * 100) | number:'1.1-1' }}% da meta diária</p>
+
+      <div class="btn-grid">
+        <ion-button
+          *ngFor="let qtd of opcoes"
+          expand="block"
+          color="primary"
+          (click)="adicionarAgua(qtd)">
+          <ion-icon name="add"></ion-icon> {{ qtd }}ml
+        </ion-button>
+      </div>
+
+      <ion-button expand="block" color="danger" (click)="removerAgua(250)">
+        - 250ml <ion-icon name="trash"></ion-icon>
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
 
 </ion-content>

@@ -41,8 +41,8 @@
               />
             </ion-thumbnail>
             <ion-label>Café da Manhã</ion-label>
-              <ion-card-content  class="p">Omelete de claras + ovos inteiros (ex: 3 claras + 1 ovo) com espinafre + aveia + banana + leite ou iogurte natural</ion-card-content>
-                <ion-badge color="warning">90 kcal</ion-badge>
+              <ion-card-content  class="p">Omelete de claras + ovos inteiros (ex: 3 claras + 1 ovo) com espinafre + aveia + banana + leite ou iogurte natural.</ion-card-content>
+                <ion-badge color="warning">1 </ion-badge>
           </ion-item>
 
           <ion-item>
@@ -52,8 +52,8 @@
               />
             </ion-thumbnail>
             <ion-label>Almoço</ion-label>
-              <ion-card-content class="p">Frango grelhado ou peito de peru ou filé de peixe + arroz integral ou batata doce + legumes variados + azeite de oliva ou abacate</ion-card-content>
-                <ion-badge color="warning">90 kcal</ion-badge>
+              <ion-card-content class="p">Frango grelhado ou peito de peru ou filé de peixe + arroz integral ou batata doce + legumes variados + azeite de oliva ou abacate.</ion-card-content>
+                <ion-badge color="warning">2</ion-badge>
           </ion-item>
 
           <ion-item>
@@ -63,8 +63,8 @@
               />
             </ion-thumbnail>
             <ion-label>Lanche da Tarde</ion-label>
-              <ion-card-content class="p">Shake de proteína (whey ou outro, se usar), ou iogurte grego + castanhas ou pasta de amendoim + fruta ou torradas integrais + ovo cozido, por exemplo</ion-card-content>
-                <ion-badge color="warning">90 kcal</ion-badge>
+              <ion-card-content class="p">Shake de proteína (whey ou outro, se usar), ou iogurte grego + castanhas ou pasta de amendoim + fruta ou torradas integrais + ovo cozido, por exemplo.</ion-card-content>
+                <ion-badge color="warning">3</ion-badge>
           </ion-item>
 
           <ion-item lines="none">
@@ -74,8 +74,8 @@
               />
             </ion-thumbnail>
             <ion-label>Jantar</ion-label>
-              <ion-card-content class="p">Carne vermelha magra ou peixe (salmão, tilápia, etc.) + quinoa ou mandioca ou batata doce + salada verde + legumes cozidos ou no vapor + óleo saudável ou sementes</ion-card-content>
-                <ion-badge color="warning">90 kcal</ion-badge>
+              <ion-card-content class="p">Carne vermelha magra ou peixe (salmão, tilápia, etc.) + quinoa ou mandioca ou batata doce + salada verde + legumes cozidos ou no vapor + óleo saudável ou sementes.</ion-card-content>
+                <ion-badge color="warning">4</ion-badge>
           </ion-item>
         </ion-list>
       </ion-card-content>
@@ -85,37 +85,47 @@
   <ion-card value="perder" *ngIf="escolhar=='perder'">
   <ion-card-header>
     <ion-card-title>Perder Massa</ion-card-title>
-    <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
+    <ion-card-subtitle>Diminuir massa</ion-card-subtitle>
   </ion-card-header>
   <ion-card-content>
     <ion-list>
       <ion-item>
         <ion-thumbnail slot="start">
-          <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
+          <img src="./assets/cafe2.png" />
         </ion-thumbnail>
-        <ion-label>Item</ion-label>
-      </ion-item>
+        <ion-label>Café da Manhã</ion-label>
+          <ion-card-content>2 ovos mexidos ou cozidos,1 fatia de pão integral OU 3 colheres de aveia com canela½ abacate pequeno OU 1 colher de pasta de amendoim natural Café preto ou chá sem açúcar.</ion-card-content>
+            <ion-badge color="warning">1</ion-badge>
+          </ion-item>
 
       <ion-item>
         <ion-thumbnail slot="start">
-          <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
+          <img src="./assets/almoco3.jpg" />
         </ion-thumbnail>
-        <ion-label>Item</ion-label>
-      </ion-item>
+        <ion-label>Almoço</ion-label>
+          <ion-card-content>120–150 g de peito de frango grelhado (ou peixe magro) Salada variada (folhas, pepino, tomate, cenoura) temperada com azeite  e limão 3 colheres de sopa de arroz integral OU batata-doce 1 concha pequena de feijão.</ion-card-content>
+            <ion-badge color="warning">2</ion-badge>
+          </ion-item>
 
       <ion-item>
         <ion-thumbnail slot="start">
-          <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
+          <img  src="./assets/tarde2.jpg" />
         </ion-thumbnail>
-        <ion-label>Item</ion-label>
-      </ion-item>
+        <ion-label>Lanche da Tarde</ion-label>
+          <ion-card-content>1 iogurte natural sem açúcar OU iogurte grego light 1 porção de frutas vermelhas (morango, amora, mirtilo) OU 1 maçã 1        punhado pequeno (30 g) de castanhas do para ou amêndoas e mel .</ion-card-content>
+            <ion-badge color="warning">3</ion-badge>
+          </ion-item>
+
 
       <ion-item lines="none">
         <ion-thumbnail slot="start">
-          <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
+          <img src="./assets/janta2.jpg" />
         </ion-thumbnail>
-        <ion-label>Item</ion-label>
-      </ion-item>
+        <ion-label>Jantar</ion-label>
+          <ion-card-content>120–150 g de peixe (salmão, tilápia ou sardinha) OU peito de frango Brócolis, couve-flor e abobrinha cozidos no vapor 1 colher de sopa de azeite de oliva para temperar Se sentir fome extra: 1 ovo cozido ou uma sopa de legumes leve.</ion-card-content>
+            <ion-badge color="warning">4</ion-badge>
+          </ion-item>
+
     </ion-list>
   </ion-card-content>
 </ion-card>
@@ -124,36 +134,44 @@
 <ion-card value="manter" *ngIf="escolhar=='manter'">
   <ion-card-header>
     <ion-card-title>Manter Massa</ion-card-title>
-    <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
+    <ion-card-subtitle>Manter massa</ion-card-subtitle>
   </ion-card-header>
   <ion-card-content>
     <ion-list>
       <ion-item>
         <ion-thumbnail slot="start">
-          <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
+          <img  src="./assets/cafe3.jpg" />
         </ion-thumbnail>
-        <ion-label>Item</ion-label>
+        <ion-label>Café da Manhã</ion-label>
+          <ion-card-content>2 fatias de pão integral ou tapioca com chia 2 fatias de queijo branco ou cottage (no lugar do ovo) 1 fruta (banana, maçã ou mamão) 1 copo de leite ou bebida vegetal fortificada 1 colher de pasta de amendoim.</ion-card-content>
+            <ion-badge color="warning">1</ion-badge>
       </ion-item>
 
       <ion-item>
         <ion-thumbnail slot="start">
-          <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
+          <img  src="./assets/almoco2.jpg" />
         </ion-thumbnail>
-        <ion-label>Item</ion-label>
+        <ion-label>Almoço</ion-label>
+          <ion-card-content>1 filé de frango grelhado (ou carne magra/peixe) 3 colheres de sopa de arroz integral ou batata-doce 1 concha de feijão Salada colorida (alface, cenoura ralada, tomate, pepino) com azeite de oliva 1 fruta cítrica (laranja ou mexerica).</ion-card-content>
+            <ion-badge color="warning">2</ion-badge>
       </ion-item>
 
       <ion-item>
         <ion-thumbnail slot="start">
-          <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
+          <img  src="./assets/tarde3.jpg" />
         </ion-thumbnail>
-        <ion-label>Item</ion-label>
+        <ion-label>Lanche da Tarde</ion-label>
+          <ion-card-content>1 sanduíche de pão integral com peito de peru/atum + alface e tomate 1 punhado de castanhas ou amendoim 1 copo de suco natural ou água de coco.</ion-card-content>
+            <ion-badge color="warning">3</ion-badge>
       </ion-item>
 
       <ion-item lines="none">
         <ion-thumbnail slot="start">
-          <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
+          <img  src="./assets/janta3.jpg" />
         </ion-thumbnail>
-        <ion-label>Item</ion-label>
+        <ion-label>Jantar</ion-label>
+          <ion-card-content>1 lombo suíno  batata corada ou quinoa Legumes cozidos no vapor (brócolis, abobrinha, cenoura) 1 colher de sopa de azeite extra virgem para temperar 1 iogurte natural.</ion-card-content>
+            <ion-badge color="warning">4</ion-badge>
       </ion-item>
     </ion-list>
   </ion-card-content>
