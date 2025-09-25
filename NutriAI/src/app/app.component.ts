@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import {IonApp, IonSplitPane, IonMenu, IonHeader, IonContent, IonList,IonListHeader, IonNote, IonMenuToggle, IonItem, IonIcon, IonLabel,IonRouterOutlet, IonRouterLink} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import {mailOutline, mailSharp,paperPlaneOutline, paperPlaneSharp,heartOutline, heartSharp,archiveOutline, archiveSharp,trashOutline, trashSharp,warningOutline, warningSharp,bookmarkOutline, bookmarkSharp,homeOutline, person, barChartOutline, podiumOutline, waterOutline, cameraOutline, restaurantOutline,} from 'ionicons/icons';
+import {mailOutline, mailSharp,paperPlaneOutline, paperPlaneSharp,heartOutline, heartSharp,archiveOutline, archiveSharp,trashOutline, trashSharp,warningOutline, warningSharp,bookmarkOutline, bookmarkSharp,homeOutline, person, barChartOutline, podiumOutline, waterOutline, cameraOutline, restaurantOutline, footstepsOutline,} from 'ionicons/icons';
 
 
 @Component({
@@ -18,7 +18,7 @@ export class AppComponent {
     { title: 'Dashboard', url: '/dashboard', icon: 'podium-outline' },
     { title: 'Meu Perfil', url: '/meuperfil', icon: 'person' },
     { title: 'Cardápio', url: '/cardapio', icon: 'restaurant-outline' },
-    { title: 'Reconhecer Alimento', url: '/reconhecer', icon: 'camera-outline' },
+    { title: 'Atividade', url: '/atividade', icon: 'footsteps-outline' },
     { title: 'Hidratação', url: '/hidratacao', icon: 'water-outline' },
   
   ];
@@ -46,6 +46,7 @@ export class AppComponent {
       'water-outline': waterOutline,
       'camera-outline': cameraOutline,
       'restaurant-outline': restaurantOutline,
+      'footsteps-outline' : footstepsOutline,
     });
   
   }

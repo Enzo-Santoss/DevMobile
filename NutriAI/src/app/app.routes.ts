@@ -28,11 +28,12 @@ export const routes: Routes = [
     loadComponent: () => import('./pagina/cardapio/cardapio.page').then( m => m.CardapioPage)
   },
   {
-    path: 'reconhecer',
-    loadComponent: () => import('./pagina/reconhecer/reconhecer.page').then( m => m.ReconhecerPage)
-  },
-  {
     path: 'hidratacao',
     loadComponent: () => import('./pagina/hidratacao/hidratacao.page').then( m => m.HidratacaoPage)
   },
+  {
+    path: 'atividade',
+    loadComponent: () => import('./pagina/atividade/atividade.page').then( m => m.AtividadePage)
+  },
+
 ];
