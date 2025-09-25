@@ -4,3 +4,14 @@
     <ion-title>Atividade</ion-title>
   </ion-toolbar>
 </ion-header>
+<ion-content class="ion-padding">
+  <h2>Seus Passos</h2>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>{{ passos }} passos</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>Calorias queimadas: {{ calorias | number:'1.0-2' }} kcal</p>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import {IonApp, IonSplitPane, IonMenu, IonHeader, IonContent, IonList,IonListHeader, IonNote, IonMenuToggle, IonItem, IonIcon, IonLabel,IonRouterOutlet, IonRouterLink} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import {mailOutline, mailSharp,paperPlaneOutline, paperPlaneSharp,heartOutline, heartSharp,archiveOutline, archiveSharp,trashOutline, trashSharp,warningOutline, warningSharp,bookmarkOutline, bookmarkSharp,homeOutline, person, barChartOutline, podiumOutline, waterOutline, cameraOutline, restaurantOutline, footstepsOutline,} from 'ionicons/icons';
+import {mailOutline, mailSharp,paperPlaneOutline, paperPlaneSharp,heartOutline, heartSharp,archiveOutline, archiveSharp,trashOutline, trashSharp,warningOutline, warningSharp,bookmarkOutline, bookmarkSharp,homeOutline, person, barChartOutline, podiumOutline, waterOutline, cameraOutline, restaurantOutline, footstepsOutline, logoGoogle,} from 'ionicons/icons';
 
 
 @Component({
@@ -47,7 +47,18 @@ export class AppComponent {
       'camera-outline': cameraOutline,
       'restaurant-outline': restaurantOutline,
       'footsteps-outline' : footstepsOutline,
+      'logo-google': logoGoogle,
     });
   
   }
+  async loginGoogle() {
+    const clientId = "1012678978201-leomt1dr68ljbsa1ltrb27dsgiimc318.apps.googleusercontent.com";
+    const redirectUri = "http://localhost:8100"; // ajuste para produção ou device real
+    const scope = "https://www.googleapis.com/auth/fitness.activity.read";
+
+    const url = `https://accounts.google.com/o/oauth2/v2/auth?response_type=token&client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}`;
+
+    window.location.href = url;
+  }
 }
+
