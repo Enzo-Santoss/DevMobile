@@ -1,30 +1,76 @@
-.clima-card {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  .clima-info {
-    display: flex;
-    align-items: center;
-
-    img {
-      width: 80px;
-      height: 80px;
-      margin-right: 15px;
-    }
-
-    .clima-texto {
-      p {
-        margin: 0;
-        font-size: 16px;
-      }
-    }
-  }
+.home-content {
+  --background: #E8F5E9; 
+  padding: 16px;
 }
 
-.btn-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-  gap: 10px;
-  margin-bottom: 10px;
+.slide-img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 16px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  margin-bottom: 12px;
+}
+
+.slide-title {
+  text-align: center;
+  color: #2E7D32; 
+  font-weight: bold;
+  font-size: 1.3rem;
+}
+
+.slide-subtitle {
+  text-align: center;
+  color: #4CAF50; 
+  font-size: 1rem;
+}
+
+.feature-card {
+  border-radius: 16px;
+  overflow: hidden;
+  background: #F1F8E9; 
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.feature-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.cta-card {
+  margin-top: 24px;
+  border-radius: 16px;
+  text-align: center;
+  background: linear-gradient(135deg, #A5D6A7, #C8E6C9);
+  color: #2E7D32;
+}
+
+.cta-card ion-button {
+  margin-top: 12px;
+}
+
+
+
+.mySwiper {
+  width: 100%;
+  height: 250px;
+}
+
+.slide-img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.slide-title {
+  text-align: center;
+  font-weight: bold;
+  margin-top: 8px;
+}
+
+.slide-subtitle {
+  text-align: center;
+  color: gray;
 }
