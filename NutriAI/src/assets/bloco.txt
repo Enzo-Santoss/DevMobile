@@ -1,0 +1,2 @@
+lembre-se de instalar todos plugin , swiper , firebase, capicitor de geolocalizacao entre outros.
+

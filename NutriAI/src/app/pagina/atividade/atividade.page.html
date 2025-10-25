@@ -4,14 +4,18 @@
     <ion-title>Atividade</ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content class="ion-padding">
-  <h2>Seus Passos</h2>
+
+<ion-content class="ion-padding" *ngIf="atividadeData$ | async as data">
+
+  <h2>Seu Progresso</h2>
+
   <ion-card>
     <ion-card-header>
-      <ion-card-title>{{ passos }} passos</ion-card-title>
+      <ion-card-title>{{ data.passosEstimados }} passos</ion-card-title>
+      <ion-card-subtitle>Distância: {{ (data.distanciaMts / 1000) | number:'1.2-2' }} km</ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
-      <p>Calorias queimadas: {{ calorias | number:'1.0-2' }} kcal</p>
+      <p>Calorias queimadas: {{ data.caloriasKcal | number:'1.0-2' }} kcal</p>
     </ion-card-content>
   </ion-card>
 </ion-content>
