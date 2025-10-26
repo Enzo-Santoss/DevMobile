@@ -1,5 +1,5 @@
 .home-content {
-  --background: #E8F5E9; 
+  --background: #ffffff; 
   padding: 16px;
 }
 
@@ -9,7 +9,7 @@
   object-fit: cover;
   border-radius: 16px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  margin-bottom: 12px;
+  
 }
 
 .slide-title {
@@ -24,6 +24,7 @@
   text-align: center;
   color: #4CAF50; 
   font-size: 1rem;
+  
 }
 
 .feature-card {

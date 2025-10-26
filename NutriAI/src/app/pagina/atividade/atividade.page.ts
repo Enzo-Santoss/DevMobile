@@ -35,7 +35,7 @@ export class AtividadePage implements OnInit {
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonInput, IonMenuButton, IonTitle, IonToolbar, IonButtons, IonCard, IonCardHeader, IonCardTitle, IonCardContent } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonInput, IonMenuButton, IonTitle, IonToolbar, IonButtons, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonCardSubtitle } from '@ionic/angular/standalone';
 import { Observable } from 'rxjs';
 import { Geolocation } from '@capacitor/geolocation';
 
@@ -48,7 +48,7 @@ import { TrackerService, AtividadeData } from '../../services/tracker.service';
   styleUrls: ['./atividade.page.scss'],
   standalone: true,
   // Mantendo todos os imports que você listou
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonInput, IonMenuButton, IonButtons, IonCard, IonCardHeader, IonCardTitle, IonCardContent]
+  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonInput, IonMenuButton, IonButtons, IonCard, IonCardHeader, IonCardTitle, IonCardContent,IonCardSubtitle]
 })
 export class AtividadePage implements OnInit, OnDestroy {
   // Variável reativa para expor os dados para o HTML (usando o | async pipe)

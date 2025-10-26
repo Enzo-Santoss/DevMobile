@@ -1,11 +1,11 @@
-<ion-header>
+<!--<ion-header>
   <ion-toolbar color="primary">
     <ion-title>Login</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding ion-text-center">
-  <h2>Bem-vindo ao <strong>NutriAI</strong> 🍎</h2>
+  <h2>Bem-vindo ao <strong>NutriAI</strong> </h2>
 
   <ion-button expand="block" color="danger" (click)="loginGoogle()" [disabled]="loading">
     <ion-icon name="logo-google" slot="start"></ion-icon>
@@ -26,6 +26,38 @@
       <p>Email: {{ user.email }}</p>
       <ion-avatar class="ion-margin-top">
         <img [src]="user.photoURL" alt="Foto do usuário">
+      </ion-avatar>
+    </ion-card-content>
+  </ion-card>
+</ion-content>-->
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding ion-text-center">
+  <h2>Bem-vindo ao NutriAI</h2>
+
+  <ion-button expand="block" color="danger" (click)="loginGoogle()" [disabled]="loading">
+    <ion-icon name="logo-google" slot="start"></ion-icon>
+    Entrar com Google
+  </ion-button>
+
+  <ion-button expand="block" fill="clear" color="medium" (click)="logout()" *ngIf="user">
+    Sair
+  </ion-button>
+
+  <ion-spinner *ngIf="loading" name="dots"></ion-spinner>
+
+  <ion-card *ngIf="user">
+    <ion-card-header>
+      <ion-card-title>{{ user?.displayName }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>Email: {{ user?.email }}</p>
+      <ion-avatar class="ion-margin-top">
+        <img [src]="user?.photoURL" alt="Foto do usuário">
       </ion-avatar>
     </ion-card-content>
   </ion-card>

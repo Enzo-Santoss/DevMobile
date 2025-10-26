@@ -6,6 +6,12 @@ export const routes: Routes = [
     redirectTo: '/home',
     pathMatch: 'full',
   },
+  // ADICIONAR A ROTA DE LOGIN AQUI!
+  {
+    path: 'login',
+    loadComponent: () => import('./pagina/login/login.page').then( m => m.LoginPage)
+  },
+  // Rota antiga do folder (mantida por precaução)
   {
     path: 'folder/:id',
     loadComponent: () =>
