@@ -58,9 +58,9 @@ export class HomePage implements OnInit {
   };
 
   slides = [
-    { img: '/assets/slides/healthy-food1.jpg', title: 'Alimente seu corpo', subtitle: 'Descubra refeições saudáveis e nutritivas.' },
-    { img: '/assets/slides/healthy-food2.jpg', title: 'Monitore sua dieta', subtitle: 'Acompanhe seu progresso diariamente.' },
-    { img: '/assets/slides/healthy-food3.jpg', title: 'Receitas incríveis', subtitle: 'Experimente novas receitas e sabores.' },
+    { img: '/assets/slides/slide1.jpeg', title: 'Alimente seu corpo', subtitle: 'Descubra refeições saudáveis e nutritivas.' },
+    { img: '/assets/slides/slide2.jpeg', title: 'Monitore sua dieta', subtitle: 'Acompanhe seu progresso diariamente.' },
+    { img: '/assets/slides/slide3.jpeg', title: 'Receitas incríveis', subtitle: 'Experimente novas receitas e sabores.' },
   ];
 
   cards = [

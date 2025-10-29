@@ -1,5 +1,6 @@
-<ion-header>
+<ion-header class="header">
   <ion-toolbar color="success">
+    <ion-menu-button slot="start"></ion-menu-button>
     <ion-title>Login</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -18,6 +19,18 @@
 
   <ion-spinner *ngIf="loading" name="dots"></ion-spinner>
 
+  <ion-input label="E-mail" label-placement="floating" fill="outline" placeholder="E-mail Cadastrado" type="email"></ion-input>
+
+  <br>
+
+  <ion-input label="Senha" label-placement="floating" fill="outline" placeholder="Senha Cadastrado" type="password"></ion-input>
+
+  <br>
+  <ion-button expand="block" color="success">Entrar</ion-button>
+
+  <br>
+  <p>Ainda não é Cadastrado?<ion-button expand="block" color="primary">Cadastre-se</ion-button></p>
+
   <ion-card *ngIf="user">
     <ion-card-header>
       <ion-card-title>{{ user?.displayName }}</ion-card-title>
@@ -30,3 +43,4 @@
     </ion-card-content>
   </ion-card>
 </ion-content>
+

@@ -22,6 +22,28 @@ p{
   border-radius: 12px;
   overflow: hidden;
 }
+.inpot {
+  display: flex;
+  gap: 10px; /* espaço entre os inputs */
+  padding: 2%;
+}
+
+.inpot ion-textarea {
+  flex: 1; /* faz os dois ocuparem o mesmo espaço */
+  border-radius: 12px;
+  overflow: hidden;
+}
+.inpat {
+  display: flex;
+  gap: 10px; /* espaço entre os inputs */
+  padding: 2%;
+}
+
+.inpat ion-textarea {
+  flex: 1; /* faz os dois ocuparem o mesmo espaço */
+  border-radius: 12px;
+  overflow: hidden;
+}
 .inputt {
   display: flex;
   gap: 10px; /* espaço entre os inputs */
@@ -39,6 +61,16 @@ p{
   --border-width: 2px;     /* espessura da borda */
 }
 .inputt ion-textarea {
+  --border-radius: 12px; /* forma recomendada no Ionic */
+  --border-color: #28a745; /* cor da borda */
+  --border-width: 2px;     /* espessura da borda */
+}
+.inpot ion-textarea {
+  --border-radius: 12px; /* forma recomendada no Ionic */
+  --border-color: #28a745; /* cor da borda */
+  --border-width: 2px;     /* espessura da borda */
+}
+.inpat ion-textarea {
   --border-radius: 12px; /* forma recomendada no Ionic */
   --border-color: #28a745; /* cor da borda */
   --border-width: 2px;     /* espessura da borda */
@@ -66,4 +98,6 @@ ion-button:hover{
   color: rgb(0, 0, 0);
   border-radius: 10px;
 }
-
+.header{
+  padding-top: 16px;
+}

@@ -14,7 +14,8 @@ import { barbell, basket, call, globe, heart, home, man, person, pin, star, tras
 })
 export class CardapioPage implements OnInit {
 
-  constructor() { }
+  constructor() {
+      addIcons({man,barbell,heart,star}); }
 
   escolhar = 'ganhar';
 

@@ -21,7 +21,8 @@ export class HidratacaoPage implements OnInit {
   consumoAtual = 1000;    // Já consumido (1L)
   opcoes = [300, 500, 800, 1000]; // Botões de adição
 
-  constructor(private toastCtrl: ToastController) {}
+  constructor(private toastCtrl: ToastController) {
+      addIcons({water,add,trash});}
 
   adicionarAgua(qtd: number) {
     this.consumoAtual = Math.min(this.consumoAtual + qtd, this.metaDiaria);

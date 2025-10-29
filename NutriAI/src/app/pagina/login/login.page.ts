@@ -62,7 +62,9 @@ import {
   IonCardHeader, 
   IonCardTitle, 
   IonCardContent, 
-  IonAvatar 
+  IonAvatar, 
+  IonMenuButton,
+  IonInput
 } from '@ionic/angular/standalone'; // <-- Usar o standalone
 import { AuthService } from 'src/app/services/auth.service';
 import { User } from '@angular/fire/auth'; // Para o tipo User
@@ -88,7 +90,7 @@ import { Observable } from 'rxjs';
     IonCardHeader,
     IonCardTitle,
     IonCardContent,
-    IonAvatar,
+    IonAvatar,IonMenuButton,IonInput,
   ]
 })
 export class LoginPage implements OnInit {

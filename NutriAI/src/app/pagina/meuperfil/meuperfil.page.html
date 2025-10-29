@@ -1,7 +1,7 @@
-<ion-header>
+<ion-header class="header">
   <ion-toolbar color="success">
     <ion-menu-button slot="start"></ion-menu-button>
-    <ion-title>Meu Perfil</ion-title>
+    <ion-title>Cadastro</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -11,6 +11,11 @@
   <ion-toolbar>
     <ion-title><img src="/assets/user.png" width="25px" height="25px"> Informações Pessoais</ion-title>
   </ion-toolbar>
+  <!--inicio Formulário-->
+  <div class="inpot">
+    <ion-textarea label="Nome 🦰" labelPlacement="floating" fill="solid" placeholder="Ex:Maria Santos"></ion-textarea>
+    <ion-textarea label="E-mail ✉️" labelPlacement="floating" fill="solid" placeholder="Ex:Maria@gmail.com"></ion-textarea>
+  </div>
   <div class="input">
     <ion-textarea label="Idade 🦰" labelPlacement="floating" fill="solid" placeholder="Ex:25"></ion-textarea>
     <ion-textarea label="Altura (cm) 📏" labelPlacement="floating" fill="solid" placeholder="Ex:1.70"></ion-textarea>
@@ -21,6 +26,13 @@
     <ion-textarea label="Peso Desejado (Kg) 🎯" labelPlacement="floating" fill="solid"
       placeholder="Ex:70.0"></ion-textarea>
   </div>
+  <div class="inpat">
+    <ion-textarea label="Senha 🔑" labelPlacement="floating" fill="solid"
+      placeholder="Ex:Use caracter"></ion-textarea>
+    <ion-textarea label="Confirme Senha 🔑" labelPlacement="floating" fill="solid"
+      placeholder="Ex:Deve Ser Igual"></ion-textarea>
+  </div>
+  <!--FIM Formulario-->
   <ion-toolbar>
     <ion-title><img src="/assets/alvo.png" width="25px" height="25px"> Seus Objetivos</ion-title>
   </ion-toolbar>
