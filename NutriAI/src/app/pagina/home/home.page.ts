@@ -64,9 +64,9 @@ export class HomePage implements OnInit {
   ];
 
   cards = [
-    { img: '/assets/cards/meal-plan.jpg', title: 'Plano de Refeições', description: 'Organize suas refeições diárias com facilidade.' },
-    { img: '/assets/cards/nutrition-tracker.jpg', title: 'Monitor de Nutrição', description: 'Acompanhe calorias, macros e nutrientes.' },
-    { img: '/assets/cards/recipes.jpg', title: 'Receitas Saudáveis', description: 'Receitas rápidas e deliciosas para todos os gostos.' },
+    { img: '/assets/cards/card1.jpeg', title: 'Plano de Refeições', description: 'Organize suas refeições diárias com facilidade.' },
+    { img: '/assets/cards/card2.jpeg', title: 'Monitor de Nutrição', description: 'Acompanhe calorias, macros e nutrientes.' },
+    { img: '/assets/cards/card3.jpeg', title: 'Receitas Saudáveis', description: 'Receitas rápidas e deliciosas para todos os gostos.' },
   ];
 
   constructor() {}

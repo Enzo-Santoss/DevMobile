@@ -18,7 +18,7 @@ import { add, trash, water } from 'ionicons/icons';
 export class HidratacaoPage implements OnInit {
 
   metaDiaria = 4000;      // Meta de 4.0L (em ml)
-  consumoAtual = 1000;    // Já consumido (1L)
+  consumoAtual = 0;    // Já consumido (1L)
   opcoes = [300, 500, 800, 1000]; // Botões de adição
 
   constructor(private toastCtrl: ToastController) {
@@ -34,7 +34,7 @@ export class HidratacaoPage implements OnInit {
     const toast = await this.toastCtrl.create({
       message: `Você removeu ${qtd}ml de água`,
       duration: 2500,
-      color: 'danger',
+      color: 'warning',
       position: 'bottom',
     });
 

@@ -23,7 +23,7 @@
 .slide-subtitle {
   text-align: center;
   color: #4CAF50; 
-  font-size: 1rem;
+  font-size: 4rem;
   
 }
 
@@ -32,12 +32,14 @@
   overflow: hidden;
   background: #F1F8E9; 
   box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+
 }
 
 .feature-card img {
   width: 100%;
-  height: 150px;
+  height: 180px;
   object-fit: cover;
+  border-radius: 15px;
 }
 
 .cta-card {
@@ -75,4 +77,14 @@
 .slide-subtitle {
   text-align: center;
   color: gray;
+  
+}
+.title{
+  text-align: center;
+  display: block;
+}
+.description{
+  text-align: center;
+  display: block;
+  font-size: 13px;
 }
