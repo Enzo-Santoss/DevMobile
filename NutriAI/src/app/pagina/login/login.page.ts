@@ -1,57 +1,8 @@
-/*import { Component, OnInit } from '@angular/core';
-import { User } from '@angular/fire/auth';
-import { AuthService } from '../../services/auth.service'; // Ajuste o caminho se necessário
-import { CommonModule } from '@angular/common'; // Necessário para *ngIf
-import { IonicModule } from '@ionic/angular'; // Necessário para ion-button, ion-card, etc.
-
-@Component({
-  selector: 'app-login',
-  templateUrl: './login.page.html',
-  styleUrls: ['./login.page.scss'],
-  // Se for standalone, adicione os imports necessários:
-  // standalone: true, 
-  // imports: [CommonModule, IonicModule] 
-})
-export class LoginPage implements OnInit {
-  user: User | null = null;
-  loading = false;
-
-  // Injetando o AuthService
-  constructor(private authService: AuthService) {}
-
-  ngOnInit() {
-    // Inscreve-se no Observable de usuário para manter o estado do componente atualizado
-    this.authService.user$.subscribe(u => this.user = u);
-  }
-
-  // Função chamada pelo botão "Entrar com Google" no HTML
-  async loginGoogle() {
-    this.loading = true; // Mostra o spinner
-    try {
-      // Chama o método do serviço
-      await this.authService.googleLogin();
-      // O redirecionamento é feito dentro do AuthService, então não precisamos dele aqui
-    } catch (err: any) {
-      console.error('Erro ao logar com Google:', err);
-      // Exibe um alerta de erro para o usuário (pode ser substituído por Toast ou AlertController)
-      alert(`Erro ao fazer login: ${err.message || 'Verifique o console.'}`); 
-    } finally {
-      this.loading = false; // Esconde o spinner
-    }
-  }
-
-  // Função chamada pelo botão "Sair" no HTML
-  async logout() {
-    // Chama o método do serviço
-    await this.authService.logout();
-    // O redirecionamento é feito dentro do AuthService
-  }
-}*/
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common'; // <-- ESSENCIAL para *ngIf
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { 
-  IonHeader, // <-- Importar componentes do Ionic
+  IonHeader,
   IonToolbar, 
   IonTitle, 
   IonContent, 
@@ -65,20 +16,19 @@ import {
   IonAvatar, 
   IonMenuButton,
   IonInput
-} from '@ionic/angular/standalone'; // <-- Usar o standalone
-import { AuthService } from 'src/app/services/auth.service';
-import { User } from '@angular/fire/auth'; // Para o tipo User
+} from '@ionic/angular/standalone';
+import { AuthService } from '../../services/auth.service';
+import { User } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
-  standalone: true, // Já deve estar aqui
+  standalone: true,
   imports: [
-    CommonModule, // <--- ADICIONE ESTE
-    FormsModule, 
-    // Adicionar todos os componentes Ionic usados no template
+    CommonModule,
+    FormsModule,
     IonHeader, 
     IonToolbar, 
     IonTitle, 
@@ -90,32 +40,32 @@ import { Observable } from 'rxjs';
     IonCardHeader,
     IonCardTitle,
     IonCardContent,
-    IonAvatar,IonMenuButton,IonInput,
+    IonAvatar,
+    IonMenuButton,
+    IonInput
   ]
 })
 export class LoginPage implements OnInit {
   user$: Observable<User | null>;
   user: User | null = null;
   loading: boolean = false;
+  email: string = '';
+  password: string = '';
   
-  // O constructor injeta o AuthService
   constructor(private authService: AuthService) {
-    this.user$ = this.authService.getCurrentUser();
+    this.user$ = this.authService.user$;
   }
 
   ngOnInit() {
-    // Se você está usando *ngIf="user", é melhor subscrever ou usar async pipe
     this.user$.subscribe(user => {
       this.user = user;
     });
   }
 
-  // Função para lidar com o login via Google
   async loginGoogle() {
     this.loading = true;
     try {
       await this.authService.googleLogin();
-      // O redirecionamento é feito pelo AuthService
     } catch (e) {
       console.error("Erro no login da página:", e);
       alert('Erro ao fazer login. Tente novamente.');
@@ -124,12 +74,75 @@ export class LoginPage implements OnInit {
     }
   }
 
-  // Função para lidar com o logout
+  async loginAnonimo() {
+    this.loading = true;
+    try {
+      await this.authService.anonymousLogin();
+    } catch (e) {
+      console.error("Erro no login anônimo:", e);
+      alert('Erro ao fazer login anônimo. Tente novamente.');
+    } finally {
+      this.loading = false;
+    }
+  }
+
   async logout() {
     try {
       await this.authService.logout();
     } catch (e) {
       console.error("Erro ao fazer logout:", e);
+    }
+  }
+
+  async loginWithEmail() {
+    if (!this.email || !this.password) {
+      alert('Por favor, preencha email e senha.');
+      return;
+    }
+
+    this.loading = true;
+    try {
+      await this.authService.loginWithEmailAndPassword(this.email, this.password);
+    } catch (e: any) {
+      console.error("Erro no login com email:", e);
+      alert(this.getErrorMessage(e.code));
+    } finally {
+      this.loading = false;
+    }
+  }
+
+  async register() {
+    if (!this.email || !this.password) {
+      alert('Por favor, preencha email e senha.');
+      return;
+    }
+
+    this.loading = true;
+    try {
+      await this.authService.registerWithEmailAndPassword(this.email, this.password);
+      alert('Cadastro realizado com sucesso!');
+    } catch (e: any) {
+      console.error("Erro no cadastro:", e);
+      alert(this.getErrorMessage(e.code));
+    } finally {
+      this.loading = false;
+    }
+  }
+
+  private getErrorMessage(errorCode: string): string {
+    switch (errorCode) {
+      case 'auth/email-already-in-use':
+        return 'Este email já está em uso.';
+      case 'auth/weak-password':
+        return 'A senha deve ter pelo menos 6 caracteres.';
+      case 'auth/invalid-email':
+        return 'Email inválido.';
+      case 'auth/user-not-found':
+        return 'Usuário não encontrado.';
+      case 'auth/wrong-password':
+        return 'Senha incorreta.';
+      default:
+        return 'Ocorreu um erro. Por favor, tente novamente.';
     }
   }
 }

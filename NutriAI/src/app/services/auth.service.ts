@@ -8,7 +8,10 @@ import {
   User, 
   onAuthStateChanged,
   setPersistence, 
-  browserLocalPersistence // <--- CORRIGIDO: Agora importa a persistência local
+  browserLocalPersistence,
+  signInAnonymously,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword
 } from '@angular/fire/auth'; 
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -41,6 +44,20 @@ export class AuthService {
    * Realiza o login com o Google usando um pop-up (signInWithPopup).
    * Este método é usado para contornar o erro 'redirect_uri_mismatch' em localhost.
    */
+  async anonymousLogin(): Promise<User | null> {
+    try {
+      // Define a persistência para 'local'
+      await setPersistence(this.auth, browserLocalPersistence);
+      
+      // Realiza o login anônimo
+      const result = await signInAnonymously(this.auth);
+      return result.user;
+    } catch (error: any) {
+      console.error('Erro no login anônimo:', error);
+      throw error;
+    }
+  }
+
   async googleLogin(): Promise<User | null> {
     const provider = new GoogleAuthProvider();
     
@@ -69,6 +86,34 @@ export class AuthService {
       // O onAuthStateChanged cuidará do redirecionamento para /login
     } catch (error) {
       console.error("Erro ao fazer logout:", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Registra um novo usuário com email e senha
+   */
+  async registerWithEmailAndPassword(email: string, password: string): Promise<User | null> {
+    try {
+      await setPersistence(this.auth, browserLocalPersistence);
+      const result = await createUserWithEmailAndPassword(this.auth, email, password);
+      return result.user;
+    } catch (error) {
+      console.error("Erro no registro:", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Realiza login com email e senha
+   */
+  async loginWithEmailAndPassword(email: string, password: string): Promise<User | null> {
+    try {
+      await setPersistence(this.auth, browserLocalPersistence);
+      const result = await signInWithEmailAndPassword(this.auth, email, password);
+      return result.user;
+    } catch (error) {
+      console.error("Erro no login:", error);
       throw error;
     }
   }

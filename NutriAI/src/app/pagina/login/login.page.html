@@ -13,6 +13,11 @@
     Entrar com Google
   </ion-button>
 
+  <ion-button expand="block" color="medium" (click)="loginAnonimo()" [disabled]="loading">
+    <ion-icon name="person-outline" slot="start"></ion-icon>
+    Entrar como Anônimo
+  </ion-button>
+
   <ion-button expand="block" fill="clear" color="medium" (click)="logout()" *ngIf="user">
     Sair
   </ion-button>
@@ -22,26 +27,26 @@
   <br>
   
 
-  <ion-input label="E-mail" label-placement="floating" fill="outline" placeholder="E-mail Cadastrado" type="email"></ion-input>
+  <ion-input [(ngModel)]="email" label="E-mail" label-placement="floating" fill="outline" placeholder="Digite seu E-mail" type="email"></ion-input>
 
   <br>
 
-  <ion-input label="Senha" label-placement="floating" fill="outline" placeholder="Senha Cadastrado" type="password"></ion-input>
+  <ion-input [(ngModel)]="password" label="Senha" label-placement="floating" fill="outline" placeholder="Digite sua Senha" type="password"></ion-input>
 
   <br>
-  <ion-button expand="block" color="success">Entrar</ion-button>
+  <ion-button expand="block" color="success" (click)="loginWithEmail()" [disabled]="loading">Entrar</ion-button>
 
   <br>
-  <p>Ainda não é Cadastrado?<ion-button expand="block" color="primary">Cadastre-se</ion-button></p>
+  <p>Ainda não é Cadastrado?<ion-button expand="block" color="primary" (click)="register()" [disabled]="loading">Cadastre-se</ion-button></p>
 
   <ion-card *ngIf="user">
     <ion-card-header>
-      <ion-card-title>{{ user?.displayName }}</ion-card-title>
+      <ion-card-title>{{ user.displayName }}</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <p>Email: {{ user?.email }}</p>
+      <p>Email: {{ user.email }}</p>
       <ion-avatar class="ion-margin-top">
-        <img [src]="user?.photoURL" alt="Foto do usuário">
+        <img [src]="user.photoURL" alt="Foto do usuário">
       </ion-avatar>
     </ion-card-content>
   </ion-card>
