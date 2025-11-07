@@ -1,6 +1,9 @@
-import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'; // 🚨 CUSTOM_ELEMENTS_SCHEMA adicionado aqui!
+import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
+import { User } from '@angular/fire/auth';
+import { Observable } from 'rxjs';
 import {
   IonContent,
   IonHeader,
@@ -49,6 +52,8 @@ register();
   ],
 })
 export class HomePage implements OnInit {
+  user$: Observable<User | null>;
+  
   // Swiper configuration object
   swiperConfig = {
     slidesPerView: 1,
@@ -69,6 +74,9 @@ export class HomePage implements OnInit {
     { img: '/assets/cards/card3.jpeg', title: 'Receitas Saudáveis', description: 'Receitas rápidas e deliciosas para todos os gostos.' },
   ];
 
-  constructor() {}
+  constructor(private authService: AuthService) {
+    this.user$ = this.authService.user$;
+  }
+
   ngOnInit() {}
 }

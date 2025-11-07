@@ -1,51 +1,51 @@
 <ion-header>
-  <ion-toolbar color="success">
-    <ion-menu-button slot="start"></ion-menu-button>
-    <ion-title>NutriAI</ion-title>
-  </ion-toolbar>
+  <ion-toolbar color="success">
+    <ion-menu-button slot="start"></ion-menu-button>
+    <ion-title>NutriAI</ion-title>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content class="home-content">
 
-  <swiper-container
-    class="mySwiper"
-    [loop]="swiperConfig.loop"
-    [autoplay]="swiperConfig.autoplay"
-    [pagination]="swiperConfig.pagination"
-    [slides-per-view]="swiperConfig.slidesPerView"
-  >
-    <swiper-slide *ngFor="let slide of slides">
-      <img [src]="slide.img" class="slide-img" />
-      <h2 class="slide-title">{{ slide.title }}</h2>
-      <p class="slide-subtitle">{{ slide.subtitle }}</p>
-    </swiper-slide>
-  </swiper-container>
+  <swiper-container
+    class="mySwiper"
+    [loop]="swiperConfig.loop"
+    [autoplay]="swiperConfig.autoplay"
+    [pagination]="swiperConfig.pagination"
+    [slides-per-view]="swiperConfig.slidesPerView"
+  >
+    <swiper-slide *ngFor="let slide of slides">
+      <img [src]="slide.img" class="slide-img" />
+      <h2 class="slide-title">{{ slide.title }}</h2>
+      <p class="slide-subtitle">{{ slide.subtitle }}</p>
+    </swiper-slide>
+  </swiper-container>
 
-  <ion-grid>
-    <ion-row>
-      <ion-col size="12" size-md="6" size-lg="4" *ngFor="let card of cards">
-        <ion-card class="feature-card">
-          <img [src]="card.img" />
-          <ion-card-header>
-            <ion-card-title class="title">{{ card.title }}</ion-card-title>
-          </ion-card-header>
-          <ion-card-content class="description">
-            {{ card.description }}
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" size-md="6" size-lg="4" *ngFor="let card of cards">
+        <ion-card class="feature-card">
+          <img [src]="card.img" />
+          <ion-card-header>
+            <ion-card-title class="title">{{ card.title }}</ion-card-title>
+          </ion-card-header>
+          <ion-card-content class="description">
+            {{ card.description }}
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
-  <ion-card color="light" class="cta-card">
-    <ion-card-header>
-      <ion-card-title>Comece sua jornada com NutriAI!</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      Descubra receitas saudáveis, organize suas refeições e acompanhe seu progresso com estilo e leveza.
-    </ion-card-content>
-    <ion-button expand="full" color="success" routerLink="/cadastro">
-      Criar Conta
-    </ion-button>
-  </ion-card>
-</ion-content> ****
+  <ion-card *ngIf="!(user$ | async)" color="light" class="cta-card">
+    <ion-card-header>
+      <ion-card-title>Comece sua jornada com NutriAI!</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      Descubra receitas saudáveis, organize suas refeições e acompanhe seu progresso com estilo e leveza.
+    </ion-card-content>
+    <ion-button expand="full" color="success" routerLink="/pagina/login">
+      Criar Conta
+    </ion-button>
+  </ion-card>
+</ion-content>

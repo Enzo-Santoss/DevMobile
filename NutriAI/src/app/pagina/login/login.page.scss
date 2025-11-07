@@ -1,11 +1,87 @@
-ion-card {
-  margin-top: 20px;
-  ion-avatar {
-    width: 100px;
-    height: 100px;
-    margin: 0 auto;
+.header {
+  ion-toolbar {
+    --background: var(--ion-color-success);
+    --color: var(--ion-color-success-contrast);
   }
-}
-.header{
   padding-top: 16px;
+}
+
+ion-content {
+  --padding-top: 2rem;
+  --padding-bottom: 2rem;
+
+  h2 {
+    margin-bottom: 2rem;
+    color: var(--ion-color-dark);
+    font-weight: 600;
+  }
+
+  .welcome-message {
+    margin: 20px 0;
+    
+    h3 {
+      color: var(--ion-color-success);
+      margin-bottom: 10px;
+    }
+  }
+
+  form {
+    max-width: 400px;
+    margin: 0 auto;
+    
+    ion-input {
+      margin-bottom: 1rem;
+      
+      &.ion-invalid.ion-touched {
+        --border-color: var(--ion-color-danger);
+      }
+      
+      &.ion-valid {
+        --border-color: var(--ion-color-success);
+      }
+    }
+  }
+
+  .validation-errors {
+    text-align: left;
+    margin: -0.5rem 0 1rem;
+    font-size: 0.875rem;
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 2rem 0;
+    
+    &::before,
+    &::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid var(--ion-color-medium);
+    }
+    
+    span {
+      padding: 0 1rem;
+      color: var(--ion-color-medium);
+      font-size: 0.875rem;
+    }
+  }
+
+  ion-spinner {
+    margin: 2rem auto;
+    display: block;
+  }
+
+  ion-card {
+    margin: 2rem auto;
+    max-width: 400px;
+    margin-top: 20px;
+    
+    ion-avatar {
+      width: 100px;
+      height: 100px;
+      margin: 1rem auto;
+    }
+  }
 }

@@ -8,47 +8,101 @@
 <ion-content class="ion-padding ion-text-center">
   <h2>Bem-vindo ao NutriAI</h2>
 
-  <ion-button expand="block" color="warning" (click)="loginGoogle()" [disabled]="loading">
-    <ion-icon name="logo-google" slot="start"></ion-icon>
-    Entrar com Google
-  </ion-button>
+  <div *ngIf="!(user$ | async)">
+    <form [formGroup]="loginForm" (ngSubmit)="loginWithEmail()">
+      <ion-input 
+        formControlName="email" 
+        label="E-mail" 
+        label-placement="floating" 
+        fill="outline" 
+        placeholder="Digite seu E-mail" 
+        type="email"
+        [class.ion-invalid]="loginForm.get('email')?.touched && loginForm.get('email')?.invalid"
+        [class.ion-valid]="loginForm.get('email')?.valid">
+      </ion-input>
 
-  <ion-button expand="block" color="medium" (click)="loginAnonimo()" [disabled]="loading">
-    <ion-icon name="person-outline" slot="start"></ion-icon>
-    Entrar como Anônimo
-  </ion-button>
+      <div class="validation-errors" *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.invalid">
+        <ion-text color="danger" *ngIf="loginForm.get('email')?.errors?.['required']">
+          Email é obrigatório
+        </ion-text>
+        <ion-text color="danger" *ngIf="loginForm.get('email')?.errors?.['email']">
+          Email inválido
+        </ion-text>
+      </div>
 
-  <ion-button expand="block" fill="clear" color="medium" (click)="logout()" *ngIf="user">
-    Sair
-  </ion-button>
+      <br>
 
-  <ion-spinner *ngIf="loading" name="dots"></ion-spinner>
-  <br>
-  <br>
-  
+      <ion-input 
+        formControlName="password" 
+        label="Senha" 
+        label-placement="floating" 
+        fill="outline" 
+        placeholder="Digite sua Senha" 
+        type="password"
+        [class.ion-invalid]="loginForm.get('password')?.touched && loginForm.get('password')?.invalid"
+        [class.ion-valid]="loginForm.get('password')?.valid">
+      </ion-input>
 
-  <ion-input [(ngModel)]="email" label="E-mail" label-placement="floating" fill="outline" placeholder="Digite seu E-mail" type="email"></ion-input>
+      <div class="validation-errors" *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid">
+        <ion-text color="danger" *ngIf="loginForm.get('password')?.errors?.['required']">
+          Senha é obrigatória
+        </ion-text>
+        <ion-text color="danger" *ngIf="loginForm.get('password')?.errors?.['minlength']">
+          Senha deve ter no mínimo 6 caracteres
+        </ion-text>
+      </div>
 
-  <br>
+      <br>
 
-  <ion-input [(ngModel)]="password" label="Senha" label-placement="floating" fill="outline" placeholder="Digite sua Senha" type="password"></ion-input>
+      <ion-button expand="block" color="success" type="submit" [disabled]="state.loading || loginForm.invalid">
+        Entrar
+      </ion-button>
 
-  <br>
-  <ion-button expand="block" color="success" (click)="loginWithEmail()" [disabled]="loading">Entrar</ion-button>
+      <br>
 
-  <br>
-  <p>Ainda não é Cadastrado?<ion-button expand="block" color="primary" (click)="register()" [disabled]="loading">Cadastre-se</ion-button></p>
+      <p>Ainda não é Cadastrado?
+        <ion-button expand="block" color="primary" (click)="register()" [disabled]="state.loading">
+          Cadastre-se
+        </ion-button>
+      </p>
 
-  <ion-card *ngIf="user">
-    <ion-card-header>
-      <ion-card-title>{{ user.displayName }}</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <p>Email: {{ user.email }}</p>
-      <ion-avatar class="ion-margin-top">
-        <img [src]="user.photoURL" alt="Foto do usuário">
-      </ion-avatar>
-    </ion-card-content>
-  </ion-card>
+      <div class="divider">
+        <span>ou</span>
+      </div>
+
+      <ion-button expand="block" color="warning" (click)="loginGoogle()" [disabled]="state.loading">
+        <ion-icon name="logo-google" slot="start"></ion-icon>
+        Entrar com Google
+      </ion-button>
+
+      <ion-button expand="block" color="medium" (click)="loginAnonimo()" [disabled]="state.loading">
+        <ion-icon name="person-outline" slot="start"></ion-icon>
+        Entrar como Anônimo
+      </ion-button>
+
+      <ion-text color="danger" *ngIf="state.error">
+        {{ state.error }}
+      </ion-text>
+    </form>
+  </div>
+
+  <div *ngIf="user$ | async as user" class="welcome-message">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>{{ user.displayName || 'Usuário' }}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>Email: {{ user.email }}</p>
+        <ion-avatar class="ion-margin-top" *ngIf="user.photoURL">
+          <img [src]="user.photoURL" alt="Foto do usuário">
+        </ion-avatar>
+        <ion-button expand="block" fill="clear" color="medium" (click)="logout()">
+          Sair
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <ion-spinner *ngIf="state.loading" name="dots"></ion-spinner>
 </ion-content>
 

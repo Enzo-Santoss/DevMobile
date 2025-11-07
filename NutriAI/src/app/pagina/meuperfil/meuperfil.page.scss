@@ -1,59 +1,42 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&display=swap');
-h1{
-    color: rgb(81, 119, 245);
+
+ion-content {
+  --background: #202024;
+}
+
+h1 {
+    color: #ffffff;
     font-family: 'Poppins,sans-serif';
     text-align: center;
     font-size: 27px;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
 }
-p{
+
+p {
     font-family: 'Poppins,sans-serif';
     text-align: center;
     font-size: 18px;
-    color: rgb(68, 67, 68);
+    color: #2dd55b;
+    opacity: 0.7;
+    margin-bottom: 2rem;
 }
-.input {
+.input, .inpot, .inpat, .inputt {
   display: flex;
-  gap: 10px; /* espaço entre os inputs */
+  gap: 10px;
   padding: 2%;
+  margin: 0.5rem 0;
+  border-radius: 8px;
 }
 
-.input ion-textarea {
-  flex: 1; /* faz os dois ocuparem o mesmo espaço */
-  border-radius: 12px;
+.input ion-textarea, .inpot ion-textarea, .inpat ion-textarea, .inputt ion-textarea {
+  flex: 1;
+  border-radius: 8px;
   overflow: hidden;
-}
-.inpot {
-  display: flex;
-  gap: 10px; /* espaço entre os inputs */
-  padding: 2%;
-}
-
-.inpot ion-textarea {
-  flex: 1; /* faz os dois ocuparem o mesmo espaço */
-  border-radius: 12px;
-  overflow: hidden;
-}
-.inpat {
-  display: flex;
-  gap: 10px; /* espaço entre os inputs */
-  padding: 2%;
-}
-
-.inpat ion-textarea {
-  flex: 1; /* faz os dois ocuparem o mesmo espaço */
-  border-radius: 12px;
-  overflow: hidden;
-}
-.inputt {
-  display: flex;
-  gap: 10px; /* espaço entre os inputs */
-  padding: 2%;
-}
-
-.inputt ion-textarea {
-  flex: 1; /* faz os dois ocuparem o mesmo espaço */
-  border-radius: 12px;
-  overflow: hidden;
+  --background: #2e2e33;
+  --color: #ffffff;
+  --placeholder-color: rgba(255, 255, 255, 0.5);
+  --border-color: transparent;
 }
 .input ion-textarea {
   --border-radius: 12px; /* forma recomendada no Ionic */
@@ -79,25 +62,78 @@ p{
   display: flex;
   gap: 4px;
   border-radius: 15px;
+  padding: 1rem;
+  margin: 1rem 0;
 }
-ion-card{
+
+ion-card {
   width: 90px;
   height: 200px;
   flex: 1;
   text-align: center;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  
+  ion-card-header {
+    ion-card-title {
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 500;
+    }
+    ion-card-subtitle {
+      color: #ffffff;
+      opacity: 0.6;
+      font-size: 14px;
+    }
+  }
 }
-ion-card  img{
+
+ion-card img {
   margin: auto;
 }
 
-ion-button{
-  color: #28a745;
+ion-button {
+  --color: #ffffff;
+  opacity: 0.8;
 }
-ion-button:hover{
-  background-color: #28a745;
-  color: rgb(0, 0, 0);
-  border-radius: 10px;
+
+ion-button:hover {
+  opacity: 1;
+  --background: rgba(255, 255, 255, 0.1);
 }
-.header{
+
+.header {
   padding-top: 16px;
 }
+
+ion-toolbar {
+  --background: #202024;
+  --color: #ffffff;
+  margin: 1rem 0;
+  border-radius: 8px;
+  //opacity: 0.9;
+  
+  ion-title {
+    font-size: 1.1rem;
+    font-weight: 500;
+  }
+}
+
+ion-list {
+  border-radius: 8px;
+  padding: 0.5rem;
+  background: transparent;
+  
+  ion-item {
+    --background: rgba(255, 255, 255, 0.06);
+    --color: #ffffff;
+    border-radius: 8px;
+    margin: 0.5rem 0;
+    
+    ion-select {
+      --placeholder-color: rgba(255, 255, 255, 0.5);
+    }
+  }
+}
+
+// Remove unused styles since we consolidated textarea styles above

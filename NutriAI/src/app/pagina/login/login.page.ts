@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { 
   IonHeader,
   IonToolbar, 
@@ -15,11 +15,16 @@ import {
   IonCardContent, 
   IonAvatar, 
   IonMenuButton,
-  IonInput
+  IonInput,
+  IonText
 } from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { logoGoogle, personOutline } from 'ionicons/icons';
 import { AuthService } from '../../services/auth.service';
 import { User } from '@angular/fire/auth';
-import { Observable } from 'rxjs';
+import { Observable, finalize } from 'rxjs';
+import { ToastController } from '@ionic/angular';
+import { LoginCredentials, LoginState } from '../../interfaces/auth.interface';
 
 @Component({
   selector: 'app-login',
@@ -28,7 +33,7 @@ import { Observable } from 'rxjs';
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule,
+    ReactiveFormsModule,
     IonHeader, 
     IonToolbar, 
     IonTitle, 
@@ -42,47 +47,59 @@ import { Observable } from 'rxjs';
     IonCardContent,
     IonAvatar,
     IonMenuButton,
-    IonInput
+    IonInput,
+    IonText
   ]
 })
 export class LoginPage implements OnInit {
-  user$: Observable<User | null>;
-  user: User | null = null;
-  loading: boolean = false;
-  email: string = '';
-  password: string = '';
+  private readonly authService = inject(AuthService);
+  private readonly toastCtrl = inject(ToastController);
+  private readonly fb = inject(FormBuilder);
   
-  constructor(private authService: AuthService) {
+  user$: Observable<User | null>;
+  loginForm: FormGroup;
+  state: LoginState = {
+    loading: false,
+    error: null
+  };
+  
+  constructor() {
     this.user$ = this.authService.user$;
-  }
-
-  ngOnInit() {
-    this.user$.subscribe(user => {
-      this.user = user;
+    addIcons({ logoGoogle, personOutline });
+    
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
 
+  ngOnInit() {}
+
   async loginGoogle() {
-    this.loading = true;
+    this.state.loading = true;
+    this.state.error = null;
     try {
       await this.authService.googleLogin();
     } catch (e) {
       console.error("Erro no login da página:", e);
-      alert('Erro ao fazer login. Tente novamente.');
+      await this.presentToast('Erro ao fazer login. Tente novamente.');
+      this.state.error = 'Erro ao fazer login com Google';
     } finally {
-      this.loading = false;
+      this.state.loading = false;
     }
   }
 
   async loginAnonimo() {
-    this.loading = true;
+    this.state.loading = true;
+    this.state.error = null;
     try {
       await this.authService.anonymousLogin();
     } catch (e) {
       console.error("Erro no login anônimo:", e);
-      alert('Erro ao fazer login anônimo. Tente novamente.');
+      await this.presentToast('Erro ao fazer login anônimo. Tente novamente.');
+      this.state.error = 'Erro ao fazer login anônimo';
     } finally {
-      this.loading = false;
+      this.state.loading = false;
     }
   }
 
@@ -91,42 +108,58 @@ export class LoginPage implements OnInit {
       await this.authService.logout();
     } catch (e) {
       console.error("Erro ao fazer logout:", e);
+      this.state.error = 'Erro ao fazer logout';
     }
   }
 
   async loginWithEmail() {
-    if (!this.email || !this.password) {
-      alert('Por favor, preencha email e senha.');
+    if (this.loginForm.invalid) {
+      await this.presentToast('Por favor, preencha todos os campos corretamente.');
       return;
     }
 
-    this.loading = true;
+    this.state.loading = true;
+    this.state.error = null;
     try {
-      await this.authService.loginWithEmailAndPassword(this.email, this.password);
+      const { email, password } = this.loginForm.value;
+      await this.authService.loginWithEmailAndPassword(email, password);
     } catch (e: any) {
       console.error("Erro no login com email:", e);
-      alert(this.getErrorMessage(e.code));
+      await this.presentToast(this.getErrorMessage(e.code));
+      this.state.error = this.getErrorMessage(e.code);
     } finally {
-      this.loading = false;
+      this.state.loading = false;
     }
   }
 
   async register() {
-    if (!this.email || !this.password) {
-      alert('Por favor, preencha email e senha.');
+    if (this.loginForm.invalid) {
+      await this.presentToast('Por favor, preencha todos os campos corretamente.');
       return;
     }
 
-    this.loading = true;
+    this.state.loading = true;
+    this.state.error = null;
     try {
-      await this.authService.registerWithEmailAndPassword(this.email, this.password);
-      alert('Cadastro realizado com sucesso!');
+      const { email, password } = this.loginForm.value;
+      await this.authService.registerWithEmailAndPassword(email, password);
+      await this.presentToast('Cadastro realizado com sucesso!');
     } catch (e: any) {
       console.error("Erro no cadastro:", e);
-      alert(this.getErrorMessage(e.code));
+      await this.presentToast(this.getErrorMessage(e.code));
+      this.state.error = this.getErrorMessage(e.code);
     } finally {
-      this.loading = false;
+      this.state.loading = false;
     }
+  }
+
+  private async presentToast(message: string, duration = 3000) {
+    const toast = await this.toastCtrl.create({
+      message,
+      duration,
+      color: 'dark'
+    });
+    await toast.present();
   }
 
   private getErrorMessage(errorCode: string): string {
