@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router'; // 1. Importe o Router
 import { CommonModule, AsyncPipe } from '@angular/common';
 import { User } from '@angular/fire/auth'; // 2. Importe o tipo User do Firebase
@@ -6,7 +6,8 @@ import { AuthService } from './services/auth.service'; // 3. Importe o seu servi
 import {IonApp, IonSplitPane, IonMenu, IonContent, IonList,IonListHeader, IonMenuToggle, IonItem, IonIcon, IonLabel,IonRouterOutlet, IonRouterLink, IonButton} from '@ionic/angular/standalone';
 import { Observable, firstValueFrom } from 'rxjs';
 import { addIcons } from 'ionicons';
-import {mailOutline, mailSharp,paperPlaneOutline, paperPlaneSharp,heartOutline, heartSharp,archiveOutline, archiveSharp,trashOutline, trashSharp,warningOutline, warningSharp,bookmarkOutline, bookmarkSharp,homeOutline, person, barChartOutline, podiumOutline, waterOutline, cameraOutline, restaurantOutline, footstepsOutline, logoGoogle, logIn, logInOutline, logOutOutline } from 'ionicons/icons'; // 4. Adicione logOutOutline
+import {mailOutline, mailSharp,paperPlaneOutline, paperPlaneSharp,heartOutline, heartSharp,archiveOutline, archiveSharp,trashOutline, trashSharp,warningOutline, warningSharp,bookmarkOutline, bookmarkSharp,homeOutline, person, barChartOutline, podiumOutline, waterOutline, cameraOutline, restaurantOutline, footstepsOutline, logIn, logInOutline, logOutOutline } from 'ionicons/icons'; // 4. Adicione logOutOutline
+import { ProfileSyncService } from './services/profile-sync.service';
 
 @Component({
   selector: 'app-root',
@@ -21,22 +22,23 @@ export class AppComponent {
   
   public appPages = [
     { title: 'Home', url: '/home', icon: 'home-outline' },
-    { title: 'Dashboard', url: '/dashboard', icon: 'podium-outline' },
     { title: 'Meu Perfil', url: '/meuperfil', icon: 'person' },
     { title: 'Cardápio', url: '/cardapio', icon: 'restaurant-outline' },
     { title: 'Atividade', url: '/atividade', icon: 'footsteps-outline' },
     { title: 'Hidratação', url: '/hidratacao', icon: 'water-outline' },
   ];
 
-  constructor(
-    private router: Router, // 6. Injete o Router
-    private authService: AuthService // 7. Injete o AuthService
-  ) {
+  private readonly router = inject(Router);
+  private readonly authService = inject(AuthService);
+  // ensure ProfileSyncService initializes early to listen for online events
+  private readonly profileSync = inject(ProfileSyncService);
+
+  constructor() {
     // Exponha o Observable do usuário para uso com async pipe
     this.user$ = this.authService.user$;
 
     // É uma boa prática adicionar todos os ícones que você usa no app.component.html
-    addIcons({logInOutline,logIn,logOutOutline, 'mailOutline':mailOutline,'mailSharp':mailSharp,'paperPlaneOutline':paperPlaneOutline,'paperPlaneSharp':paperPlaneSharp,'heartOutline':heartOutline,'heartSharp':heartSharp,'archiveOutline':archiveOutline,'archiveSharp':archiveSharp,'trashOutline':trashOutline,'trashSharp':trashSharp,'warningOutline':warningOutline,'warningSharp':warningSharp,'bookmarkOutline':bookmarkOutline,'bookmarkSharp':bookmarkSharp,'homeOutline':homeOutline,'person':person,'barChartOutline':barChartOutline,'podiumOutline':podiumOutline,'waterOutline':waterOutline,'cameraOutline':cameraOutline,'restaurantOutline':restaurantOutline,'footstepsOutline':footstepsOutline,'logoGoogle':logoGoogle,'logOutline':logInOutline});
+    addIcons({logInOutline,logIn,logOutOutline, 'mailOutline':mailOutline,'mailSharp':mailSharp,'paperPlaneOutline':paperPlaneOutline,'paperPlaneSharp':paperPlaneSharp,'heartOutline':heartOutline,'heartSharp':heartSharp,'archiveOutline':archiveOutline,'archiveSharp':archiveSharp,'trashOutline':trashOutline,'trashSharp':trashSharp,'warningOutline':warningOutline,'warningSharp':warningSharp,'bookmarkOutline':bookmarkOutline,'bookmarkSharp':bookmarkSharp,'homeOutline':homeOutline,'person':person,'barChartOutline':barChartOutline,'podiumOutline':podiumOutline,'waterOutline':waterOutline,'cameraOutline':cameraOutline,'restaurantOutline':restaurantOutline,'footstepsOutline':footstepsOutline,'logOutline':logInOutline});
   }
 
   /**

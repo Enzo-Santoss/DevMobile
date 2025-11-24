@@ -1,3 +1,113 @@
 .header{
   padding-top: 16px;
 }
+
+:host {
+  --ion-background-color: #2f2f2f;
+}
+
+.recipe-item {
+  display: flex;
+  align-items: flex-start;
+  padding: 18px 12px;
+}
+
+.recipe-body {
+  flex: 1;
+  padding: 0 12px;
+}
+
+.recipe-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.recipe-title {
+  margin: 0;
+  font-size: 24px;
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.recipe-title.clickable { cursor: pointer; }
+
+.recipe-actions ion-icon { color: #f44336; }
+.recipe-actions ion-icon.favorited { color: #2196f3; }
+
+.recipe-tags {
+  display: flex;
+  gap: 8px;
+}
+
+.fav-pill {
+  background: #00c853;
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.fav-pill.local {
+  background: #2196f3;
+}
+
+.recipe-meta {
+  margin-top: 10px;
+}
+
+.recipe-desc {
+  color: #d1d1d1;
+  white-space: pre-wrap;
+}
+
+.recipe-columns{
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.recipe-columns .col-left,
+.recipe-columns .col-right{
+  flex: 1 1 0;
+}
+
+.recipe-columns h4{
+  margin: 0 0 6px 0;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.recipe-columns h5{
+  margin: 8px 0 4px 0;
+  color: #dcdcdc;
+  font-size: 13px;
+}
+
+.recipe-macros-summary{
+  margin-top: 8px;
+  color: #bdbdbd;
+  font-size: 13px;
+}
+
+.recipe-full-macros{
+  margin-top: 12px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255,255,255,0.04);
+}
+
+.recipe-full-macros h5{ margin: 0 0 6px 0; color:#ffffff; font-size:14px }
+
+.recipe-actions {
+  display: flex;
+  align-items: center;
+}
+
+ion-thumbnail img {
+  width: 120px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 6px;
+}

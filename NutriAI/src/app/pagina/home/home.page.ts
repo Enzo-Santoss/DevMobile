@@ -1,9 +1,12 @@
-import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { User } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
+import { SheetsService, MenuItem } from '../../services/sheets.service';
+import { Router, RouterModule } from '@angular/router';
+import { TrackerService } from '../../services/tracker.service';
 import {
   IonContent,
   IonHeader,
@@ -49,10 +52,27 @@ register();
     IonCardTitle,
     IonCardContent,
     IonButton,
+    // RouterModule is needed so `routerLink` in the template works when using standalone component
+    RouterModule,
   ],
+  providers: [],
 })
 export class HomePage implements OnInit {
-  user$: Observable<User | null>;
+  private readonly authService = inject(AuthService);
+  private readonly sheets = inject(SheetsService);
+  private readonly router = inject(Router);
+  private readonly tracker = inject(TrackerService);
+  passosEstimados: number = 0;
+  metaPassos: number = 10000;
+  passosPercent: number = 0;
+
+  // hydration
+  hidratacaoConsumo = 0;
+  hidratacaoMeta = 4000;
+  favorites: MenuItem[] = [];
+  loadingFavorites = true;
+  // keep original cards as fallback
+  user$: Observable<User | null> = this.authService.user$;
   
   // Swiper configuration object
   swiperConfig = {
@@ -74,9 +94,69 @@ export class HomePage implements OnInit {
     { img: '/assets/cards/card3.jpeg', title: 'Receitas Saudáveis', description: 'Receitas rápidas e deliciosas para todos os gostos.' },
   ];
 
-  constructor(private authService: AuthService) {
-    this.user$ = this.authService.user$;
+  constructor() {}
+
+  openRecipe(item?: any) {
+    if (!item) return;
+    try {
+      const id = item.id ?? undefined;
+      const title = item.title ?? undefined;
+      this.router.navigate(['/pagina/cardapio'], { queryParams: { id, title } });
+    } catch (e) {
+      console.warn('Failed to navigate to cardapio with item', item, e);
+    }
   }
 
-  ngOnInit() {}
+  ngOnInit(): void {
+    this.loadingFavorites = true;
+    this.sheets.getMenuItems().subscribe({
+      next: items => {
+        this.favorites = items.filter(i => !!i.favorite);
+        this.loadingFavorites = false;
+      },
+      error: () => { this.loadingFavorites = false; }
+    });
+
+    // subscribe to steps data
+    this.tracker.atividadeData$.subscribe(d => {
+      if (!d) return;
+      this.passosEstimados = d.passosEstimados;
+      try {
+        const raw = localStorage.getItem('metaPassos');
+        this.metaPassos = raw ? Number(raw) || this.metaPassos : this.metaPassos;
+      } catch (e) {}
+      this.passosPercent = this.metaPassos > 0 ? (this.passosEstimados / this.metaPassos) : 0;
+      // optional debug logging enabled via localStorage 'home_debug' === '1'
+      try {
+        const dbg = localStorage.getItem('home_debug') === '1';
+        if (dbg) console.debug('Home debug (steps):', { passosEstimados: this.passosEstimados, metaPassos: this.metaPassos, passosPercentPct: this.passosPercentPct });
+      } catch (e) {}
+    });
+
+    // load hydration from localStorage if present
+    try {
+      const c = localStorage.getItem('hidratacao_consumo');
+      const m = localStorage.getItem('hidratacao_meta');
+      if (c) this.hidratacaoConsumo = Number(c) || this.hidratacaoConsumo;
+      if (m) this.hidratacaoMeta = Number(m) || this.hidratacaoMeta;
+    } catch (e) {}
+
+    // optional hydration debug
+    try {
+      const dbg = localStorage.getItem('home_debug') === '1';
+      if (dbg) console.debug('Home debug (hydration):', { hidratacaoConsumo: this.hidratacaoConsumo, hidratacaoMeta: this.hidratacaoMeta, hidratacaoPercentPct: this.hidratacaoPercentPct });
+    } catch (e) {}
+  }
+
+  // percent values clamped between 0 and 100 for safe binding in template
+  get passosPercentPct(): number {
+    const pct = (this.passosPercent || 0) * 100;
+    return Math.max(0, Math.min(100, Number.isFinite(pct) ? pct : 0));
+  }
+
+  get hidratacaoPercentPct(): number {
+    const meta = this.hidratacaoMeta && this.hidratacaoMeta > 0 ? this.hidratacaoMeta : 1;
+    const pct = (this.hidratacaoConsumo || 0) / meta * 100;
+    return Math.max(0, Math.min(100, Number.isFinite(pct) ? pct : 0));
+  }
 }

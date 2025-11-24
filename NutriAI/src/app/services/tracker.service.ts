@@ -1,6 +1,6 @@
 // src/app/services/tracker.service.ts
 
-import { Injectable, NgZone } from '@angular/core';
+import { Injectable, NgZone, inject } from '@angular/core';
 import { Geolocation, Position, WatchPositionCallback } from '@capacitor/geolocation';
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -32,7 +32,9 @@ export class TrackerService {
   private readonly COMPRIMENTO_PASSADA_M = 0.76; // Média de 76 cm
   private readonly PESO_KG = 70; // Peso base para o cálculo de calorias (Mude isso para um valor do usuário)
 
-  constructor(private zone: NgZone) { }
+  private readonly zone = inject(NgZone);
+
+  constructor() { }
 
   async startTracking() {
     if (this.tracking) return;

@@ -7,15 +7,49 @@
 
 <ion-content class="ion-padding" *ngIf="atividadeData$ | async as data">
 
-  <h2>Seu Progresso</h2>
+  <section class="activity-top">
+    <div class="steps-card">
+      <div class="steps-left">
+        <div class="steps-number">{{ data.passosEstimados }}</div>
+        <div class="steps-label">passos</div>
+      </div>
+      <div class="steps-right">
+        <div class="metric">
+          <div class="metric-value">{{ (data.distanciaMts / 1000) | number:'1.2-2' }} km</div>
+          <div class="metric-label">distância</div>
+        </div>
+        <div class="metric">
+          <div class="metric-value">{{ data.caloriasKcal | number:'1.0-0' }} kcal</div>
+          <div class="metric-label">calorias</div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>{{ data.passosEstimados }} passos</ion-card-title>
-      <ion-card-subtitle>Distância: {{ (data.distanciaMts / 1000) | number:'1.2-2' }} km</ion-card-subtitle>
-    </ion-card-header>
-    <ion-card-content>
-      <p>Calorias queimadas: {{ data.caloriasKcal | number:'1.0-2' }} kcal</p>
-    </ion-card-content>
-  </ion-card>
+  <!-- Meta input (integrated into steps card) -->
+  <div class="meta-area">
+    <div class="meta-label">Meta de passos</div>
+    <div class="meta-controls">
+      <ng-container *ngIf="!metaEditing; else editBlock">
+        <div class="meta-pill scrollable" (click)="enableMetaEdit()" title="Clique para editar">
+          {{ metaPassos }}
+        </div>
+        <button class="save-meta" (click)="enableMetaEdit()">Editar</button>
+      </ng-container>
+      <ng-template #editBlock>
+        <input id="meta-input" type="number" [(ngModel)]="metaPassos" (keyup.enter)="saveAndClose()" (blur)="saveAndClose()" />
+        <button class="save-meta" (click)="saveAndClose()">Salvar</button>
+      </ng-template>
+    </div>
+  </div>
+
+  <!-- Progress bar towards meta -->
+  <div class="progress-wrap" *ngIf="metaPassos && metaPassos > 0">
+    <div class="progress-bar">
+      <div class="progress-fill" [style.width.%]="(data.passosEstimados / metaPassos) * 100"></div>
+    </div>
+    <div class="progress-label">{{ ((data.passosEstimados / metaPassos) * 100) | number:'1.0-0' }}% da meta</div>
+  </div>
+
+
 </ion-content>

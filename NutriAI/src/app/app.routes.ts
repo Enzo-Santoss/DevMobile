@@ -26,10 +26,6 @@ export const routes: Routes = [
     loadComponent: () => import('./pagina/home/home.page').then( m => m.HomePage)
   },
   {
-    path: 'dashboard',
-    loadComponent: () => import('./pagina/dashboard/dashboard.page').then( m => m.DashboardPage)
-  },
-  {
     path: 'meuperfil',
     loadComponent: () => import('./pagina/meuperfil/meuperfil.page').then( m => m.MeuperfilPage)
   },

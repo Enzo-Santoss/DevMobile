@@ -12,25 +12,35 @@
     <ion-title><img src="/assets/user.png" width="25px" height="25px">Informações Pessoais</ion-title>
   </ion-toolbar>
   <!--inicio Formulário-->
+  <form [formGroup]="profileForm">
   <div class="inpot">
-    <ion-textarea label="Nome" labelPlacement="floating" fill="solid" placeholder="Ex:Maria Santos"></ion-textarea>
-    <ion-textarea label="E-mail" labelPlacement="floating" fill="solid" placeholder="Ex:Maria@gmail.com"></ion-textarea>
+    <ion-item>
+      <ion-input formControlName="nome" label="Nome" label-placement="floating" placeholder="Ex: Maria Santos"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input formControlName="email" label="E-mail" label-placement="floating" placeholder="Ex: maria@gmail.com" type="email"></ion-input>
+    </ion-item>
   </div>
   <div class="input">
-    <ion-textarea label="Idade" labelPlacement="floating" fill="solid" placeholder="Ex:25"></ion-textarea>
-    <ion-textarea label="Altura (cm)" labelPlacement="floating" fill="solid" placeholder="Ex:1.70"></ion-textarea>
+    <ion-item>
+      <ion-input formControlName="idade" label="Idade" label-placement="floating" placeholder="Ex:25" type="number"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input formControlName="altura" label="Altura (cm)" label-placement="floating" placeholder="Ex:170" type="number"></ion-input>
+    </ion-item>
   </div>
   <div class="inputt">
-    <ion-textarea label="Peso Atual (kg)" labelPlacement="floating" fill="solid"
-      placeholder="Ex:90.1"></ion-textarea>
-    <ion-textarea label="Peso Desejado (Kg)" labelPlacement="floating" fill="solid"
-      placeholder="Ex:70.0"></ion-textarea>
+    <ion-item>
+      <ion-input formControlName="pesoAtual" label="Peso Atual (kg)" label-placement="floating" placeholder="Ex:90.1" type="number"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input formControlName="pesoDesejado" label="Peso Desejado (kg)" label-placement="floating" placeholder="Ex:70.0" type="number"></ion-input>
+    </ion-item>
   </div>
-  <div class="inpat">
-    <ion-textarea label="Senha" labelPlacement="floating" fill="solid"
-      placeholder="Ex:Use caracter"></ion-textarea>
-    <ion-textarea label="Confirme Senha" labelPlacement="floating" fill="solid"
-      placeholder="Ex:Deve Ser Igual"></ion-textarea>
+  <!-- password fields omitted from profile storage (handled by Auth) -->
+  <div class="inpat" style="display:none">
+    <ion-textarea label="Senha" labelPlacement="floating" fill="solid" placeholder="Ex:Use caracter"></ion-textarea>
+    <ion-textarea label="Confirme Senha" labelPlacement="floating" fill="solid" placeholder="Ex:Deve Ser Igual"></ion-textarea>
   </div>
   <!--FIM Formulario-->
   <ion-toolbar>
@@ -44,7 +54,7 @@
         <ion-card-subtitle>Aumentar peso e músculos</ion-card-subtitle>
         <img src="/assets/musculo.png" width="33px" height="30px">
       </ion-card-header>
-      <ion-button fill="clear">Ganhar</ion-button>
+        <ion-button fill="clear" (click)="profileForm.patchValue({ objetivo: 'ganhar' })">Ganhar</ion-button>
     </ion-card>
 
     <ion-card>
@@ -53,7 +63,7 @@
         <ion-card-subtitle>Reduzir gordura corporal</ion-card-subtitle>
         <img src="/assets/alvo.png" width="33px" height="30px">
       </ion-card-header>
-      <ion-button fill="clear">Perder</ion-button>
+      <ion-button fill="clear" (click)="profileForm.patchValue({ objetivo: 'perder' })">Perder</ion-button>
     </ion-card>
   
 
@@ -63,7 +73,7 @@
         <ion-card-subtitle>Nutrição personalizadas  </ion-card-subtitle>
         <img src="/assets/balaca.png" width="33px" height="30px">
       </ion-card-header>
-      <ion-button fill="clear">Manter</ion-button>
+      <ion-button fill="clear" (click)="profileForm.patchValue({ objetivo: 'manter' })">Manter</ion-button>
     </ion-card>
   </div>
   <div>
@@ -72,7 +82,7 @@
     </ion-toolbar>
     <ion-list>
       <ion-item class="nivel">
-        <ion-select  interface="popover" placeholder="Selecione seu nível de atividade">
+        <ion-select formControlName="nivelAtividade" interface="popover" placeholder="Selecione seu nível de atividade">
         <ion-select-option>Sedentário - Pouco ou nenhum exercício</ion-select-option>
         <ion-select-option>Leve - Exercício leve 1-3 dias/semana</ion-select-option>
         <ion-select-option>Moderado - Exercício moderado 3-5 dias/semana</ion-select-option>
@@ -81,5 +91,6 @@
       </ion-item>
     </ion-list>
   </div>
-  <ion-button expand="block" color="success">Enviar</ion-button>
+  <ion-button expand="block" color="success" (click)="saveProfile()">Enviar</ion-button>
+  </form>
 </ion-content>

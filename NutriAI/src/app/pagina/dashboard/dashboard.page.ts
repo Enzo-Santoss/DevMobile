@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar,IonMenuButton, } from '@ionic/angular/standalone';
@@ -10,11 +10,8 @@ import { IonContent, IonHeader, IonTitle, IonToolbar,IonMenuButton, } from '@ion
   standalone: true,
   imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule,IonMenuButton,]
 })
-export class DashboardPage implements OnInit {
+export class DashboardPage {
 
   constructor() { }
-
-  ngOnInit() {
-  }
 
 }

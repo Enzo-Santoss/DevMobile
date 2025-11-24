@@ -6,6 +6,12 @@
 </ion-header>
 
 <ion-content class="home-content">
+  <div class="welcome">
+    <h2 *ngIf="(user$ | async) as user; else anon">Bem vindo, {{ user.displayName || user.email }}</h2>
+    <ng-template #anon>
+      <h2>Bem vindo ao NutriAI</h2>
+    </ng-template>
+  </div>
 
   <swiper-container
     class="mySwiper"
@@ -21,23 +27,63 @@
     </swiper-slide>
   </swiper-container>
 
-  <ion-grid>
-    <ion-row>
-      <ion-col size="12" size-md="6" size-lg="4" *ngFor="let card of cards">
-        <ion-card class="feature-card">
-          <img [src]="card.img" />
-          <ion-card-header>
-            <ion-card-title class="title">{{ card.title }}</ion-card-title>
-          </ion-card-header>
-          <ion-card-content class="description">
-            {{ card.description }}
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  <section class="fav-section" *ngIf="favorites && favorites.length > 0; else features">
+    <h3 class="section-title">Favoritos da semana</h3>
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12" size-md="6" size-lg="4" *ngFor="let item of favorites">
+          <ion-card class="fav-card" (click)="openRecipe(item)">
+            <ion-card-header>
+              <ion-card-title class="title">{{ item.title }}</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <div class="fav-meta">{{ item.category | titlecase }}</div>
+              <div class="fav-macros">{{ item.macros }}</div>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </section>
 
-  <ion-card *ngIf="!(user$ | async)" color="light" class="cta-card">
+  <ng-template #features>
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12" size-md="6" size-lg="4" *ngFor="let card of cards">
+          <ion-card class="feature-card">
+            <img [src]="card.img" />
+            <ion-card-header>
+              <ion-card-title class="title">{{ card.title }}</ion-card-title>
+            </ion-card-header>
+            <ion-card-content class="description">
+              {{ card.description }}
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ng-template>
+
+  <!-- Centered Meta and Hydration blocks -->
+  <div class="center-blocks">
+    <div class="center-item">
+      <h3>Meta de passos</h3>
+        <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" [attr.aria-valuenow]="passosPercentPct | number:'1.0-0'">
+          <div class="progress-fill" [style.width.%]="passosPercentPct"></div>
+        </div>
+        <div class="progress-label">{{ passosEstimados }} / {{ metaPassos }} passos</div>
+    </div>
+
+    <div class="center-item">
+      <h3>Hidratação</h3>
+        <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" [attr.aria-valuenow]="hidratacaoPercentPct | number:'1.0-0'">
+          <div class="progress-fill" [style.width.%]="hidratacaoPercentPct"></div>
+        </div>
+        <div class="progress-label">{{ (hidratacaoConsumo/1000) | number:'1.1-1' }}L / {{ (hidratacaoMeta/1000) | number:'1.1-1' }}L</div>
+    </div>
+  </div>
+
+  <ion-card *ngIf="(user$ | async) === null" color="light" class="cta-card">
     <ion-card-header>
       <ion-card-title>Comece sua jornada com NutriAI!</ion-card-title>
     </ion-card-header>

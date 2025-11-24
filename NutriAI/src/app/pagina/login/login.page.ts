@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { 
@@ -19,7 +19,7 @@ import {
   IonText
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { logoGoogle, personOutline } from 'ionicons/icons';
+import { personOutline } from 'ionicons/icons';
 import { AuthService } from '../../services/auth.service';
 import { User } from '@angular/fire/auth';
 import { Observable, finalize } from 'rxjs';
@@ -51,7 +51,7 @@ import { LoginCredentials, LoginState } from '../../interfaces/auth.interface';
     IonText
   ]
 })
-export class LoginPage implements OnInit {
+export class LoginPage {
   private readonly authService = inject(AuthService);
   private readonly toastCtrl = inject(ToastController);
   private readonly fb = inject(FormBuilder);
@@ -65,7 +65,7 @@ export class LoginPage implements OnInit {
   
   constructor() {
     this.user$ = this.authService.user$;
-    addIcons({ logoGoogle, personOutline });
+    addIcons({ personOutline });
     
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -73,21 +73,9 @@ export class LoginPage implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  
 
-  async loginGoogle() {
-    this.state.loading = true;
-    this.state.error = null;
-    try {
-      await this.authService.googleLogin();
-    } catch (e) {
-      console.error("Erro no login da página:", e);
-      await this.presentToast('Erro ao fazer login. Tente novamente.');
-      this.state.error = 'Erro ao fazer login com Google';
-    } finally {
-      this.state.loading = false;
-    }
-  }
+  // Google login removed per request
 
   async loginAnonimo() {
     this.state.loading = true;
@@ -98,6 +86,27 @@ export class LoginPage implements OnInit {
       console.error("Erro no login anônimo:", e);
       await this.presentToast('Erro ao fazer login anônimo. Tente novamente.');
       this.state.error = 'Erro ao fazer login anônimo';
+    } finally {
+      this.state.loading = false;
+    }
+  }
+
+  async forgotPassword() {
+    const email = this.loginForm.get('email')?.value;
+    if (!email) {
+      await this.presentToast('Por favor, informe o e-mail para redefinição de senha.');
+      return;
+    }
+
+    this.state.loading = true;
+    try {
+      await this.authService.sendPasswordReset(email);
+      await this.presentToast('E-mail de redefinição enviado. Verifique sua caixa de entrada.');
+    } catch (e: any) {
+      console.error('Erro ao enviar redefinição de senha:', e);
+      const msg = e?.code === 'auth/user-not-found' ? 'Usuário não encontrado.' : 'Erro ao enviar e-mail de redefinição.';
+      await this.presentToast(msg);
+      this.state.error = msg;
     } finally {
       this.state.loading = false;
     }

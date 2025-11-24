@@ -8,7 +8,7 @@
 <ion-content class="ion-padding ion-text-center">
   <h2>Bem-vindo ao NutriAI</h2>
 
-  <div *ngIf="!(user$ | async)">
+  <div *ngIf="(user$ | async) === null">
     <form [formGroup]="loginForm" (ngSubmit)="loginWithEmail()">
       <ion-input 
         formControlName="email" 
@@ -69,12 +69,11 @@
       <div class="divider">
         <span>ou</span>
       </div>
+      <!-- Google login removed -->
 
-      <ion-button expand="block" color="warning" (click)="loginGoogle()" [disabled]="state.loading">
-        <ion-icon name="logo-google" slot="start"></ion-icon>
-        Entrar com Google
+      <ion-button expand="block" color="tertiary" (click)="forgotPassword()" [disabled]="state.loading">
+        Esqueceu a senha?
       </ion-button>
-
       <ion-button expand="block" color="medium" (click)="loginAnonimo()" [disabled]="state.loading">
         <ion-icon name="person-outline" slot="start"></ion-icon>
         Entrar como Anônimo

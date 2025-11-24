@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { 
   Auth, 
@@ -22,10 +22,10 @@ export class AuthService {
   private userSubject = new BehaviorSubject<User | null>(null);
   public user$ = this.userSubject.asObservable();
 
-  constructor(
-    private auth: Auth, 
-    private router: Router
-  ) {
+  private readonly auth = inject(Auth);
+  private readonly router = inject(Router);
+
+  constructor() {
     // Escuta as mudanças de estado do Firebase Auth
     onAuthStateChanged(this.auth, (user) => {
       this.userSubject.next(user);
@@ -73,6 +73,20 @@ export class AuthService {
     } catch (error) {
       console.error("Erro no login do Google:", error);
       // É importante relançar o erro para que o componente possa exibir uma mensagem
+      throw error;
+    }
+  }
+
+  /**
+   * Envia e-mail para redefinição de senha usando Firebase
+   */
+  async sendPasswordReset(email: string): Promise<void> {
+    try {
+      // Importa dinamicamente para evitar problemas em builds que não incluam o método
+      const { sendPasswordResetEmail } = await import('firebase/auth');
+      await sendPasswordResetEmail(this.auth, email);
+    } catch (error) {
+      console.error('Erro ao enviar email de redefinição de senha:', error);
       throw error;
     }
   }
