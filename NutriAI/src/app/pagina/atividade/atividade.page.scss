@@ -14,10 +14,9 @@
   align-items: center;
   width: 100%;
   max-width: 920px;
-  background: rgba(255,255,255,0.02);
   border-radius: 10px;
   padding: 18px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  background: #2f2f2f
 }
 
 .steps-left {
@@ -25,19 +24,16 @@
   flex-direction: column;
   align-items: flex-start;
   padding-right: 20px;
-  border-right: 1px solid rgba(255,255,255,0.04);
 }
 
 .steps-number {
   font-size: 44px;
   font-weight: 800;
-  color: #ffffff;
   line-height: 1;
 }
 
 .steps-label {
   font-size: 13px;
-  color: #bdbdbd;
   margin-top: 6px;
 }
 
@@ -57,12 +53,13 @@
 }
 
 .meta-label{
-  color:#cfd8dc;
   font-weight:700;
   font-size:14px;
 }
 
 .meta-controls{ display:flex; gap:8px; align-items:center }
+.save-meta{ background:transparent; border:1px solid rgba(255,255,255,0.06); padding:6px 10px; border-radius:6px }
+/* removed .submeta-pill */
 
 .metric {
   display: flex;
@@ -72,24 +69,40 @@
 .metric-value {
   font-size: 16px;
   font-weight: 700;
-  color: #ffffff;
 }
 
 .metric-label {
   font-size: 12px;
-  color: #bdbdbd;
 }
 
 .section-title { margin-top: 8px; margin-bottom: 8px }
 
 .meta-input{ display:flex; gap:8px; align-items:center; margin:12px 0 }
-.meta-input label{ color:#d1d1d1 }
-.meta-input input{ padding:8px; border-radius:6px; border:1px solid rgba(255,255,255,0.06); background:transparent; color:#fff }
-.meta-input .save-meta{ background:#2196f3; color:#fff; border:none; padding:8px 12px; border-radius:6px }
-.meta-pill{ padding:8px 12px; border-radius:8px; background:rgba(255,255,255,0.02); color:#fff; max-width:280px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+.meta-input input{ padding:8px; border-radius:6px; border:1px solid rgba(255,255,255,0.06); background:transparent}
+.meta-input .save-meta{border:none; padding:8px 12px; border-radius:6px }
+.meta-pill {
+  padding: 8px 12px;
+  border-radius: 8px;
+  max-width: 280px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  background: var(--ion-color-light, #f4f4f4);
+  color: var(--ion-color-dark, #222);
+  border: 2px solid var(--ion-color-success, #2dd36f);
+  font-weight: bold;
+  font-size: 1.2em;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  cursor: pointer;
+  transition: box-shadow 0.2s, border 0.2s;
+}
+.meta-pill.meta-editable:hover, .meta-pill.meta-editable:focus {
+  box-shadow: 0 4px 16px rgba(46, 204, 113, 0.15);
+  border: 2px solid var(--ion-color-primary, #3880ff);
+}
 .meta-pill.scrollable{ overflow-x:auto; -webkit-overflow-scrolling:touch }
 
 .progress-wrap{ margin-top:12px }
-.progress-bar{ height:10px; background:rgba(255,255,255,0.04); border-radius:999px; overflow:hidden }
+.progress-bar{ height:10px; border-radius:999px; overflow:hidden }
 .progress-fill{ height:100%; background:linear-gradient(90deg,#00c853,#2196f3); width:0 }
-.progress-label{ margin-top:6px; color:#bdbdbd; font-size:13px }
+.progress-label{ margin-top:6px; font-size:13px }

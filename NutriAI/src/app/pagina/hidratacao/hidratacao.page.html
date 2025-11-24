@@ -1,3 +1,6 @@
+<ion-button expand="block" color="medium" (click)="avancarDia()" style="margin-bottom:8px;">
+        Avançar dia (teste)
+      </ion-button>
 <ion-header class="header">
   <ion-toolbar color="success">
     <ion-menu-button slot="start"></ion-menu-button>
@@ -16,31 +19,61 @@
     </ion-card-header>
 
     <ion-card-content>
-      <h2>
-        {{ (consumoAtual / 1000) | number:'1.1-1' }}L /
-        {{ metaDiaria / 1000 }}L
-      </h2>
 
-      <ion-progress-bar
-        [value]="consumoAtual / metaDiaria"
-        color="primary">
-      </ion-progress-bar>
+      <div class="hidratacao-meta-bar">
+        <div class="hidratacao-meta-fill" [style.width.%]="(consumoAtual / metaDiaria) * 100"></div>
+        <div class="hidratacao-meta-content">
+          <span [ngStyle]="{color: (consumoAtual >= metaDiaria) ? '#2dd55b' : '#D62D32'}">
+            {{ (consumoAtual / 1000) | number:'1.2-2' }}L
+          </span>
+          <span class="meta-sep">/</span>
+          <span>{{ metaDiaria / 1000 }}L</span>
+          <ion-button fill="clear" size="small" class="edit-meta-btn" (click)="editandoMeta = !editandoMeta">
+            <ion-icon name="create-outline"></ion-icon>
+          </ion-button>
+        </div>
+      </div>
+      <div *ngIf="editandoMeta" class="meta-select-row">
+        <ion-segment [(ngModel)]="metaLitrosSelecionado" (ionChange)="atualizarMetaLitros()">
+          <ion-segment-button *ngFor="let l of [1,2,3,4,5]" [value]="l">{{l}}L</ion-segment-button>
+        </ion-segment>
+      </div>
+      <div class="hidratacao-log">
+        <h3>Histórico diário</h3>
+        <ul>
+          <li *ngFor="let log of logHidratacao">
+            <span>{{ log.data }}</span>:
+            <span [ngStyle]="{color: (log.consumo >= log.meta) ? '#2dd55b' : '#D62D32'}">
+              {{ (log.consumo/1000) | number:'1.2-2' }}L
+            </span>
+            /
+            <span>{{ (log.meta/1000) | number:'1.2-2' }}L</span>
+          </li>
+        </ul>
+      </div>
+
 
       <p>{{ (consumoAtual / metaDiaria * 100) | number:'1.1-1' }}% da meta diária</p>
 
       <div class="btn-grid">
-        <ion-button
-          *ngFor="let qtd of opcoes"
-          expand="block"
-          color="primary"
-          (click)="adicionarAgua(qtd)">
-          <ion-icon name="add"></ion-icon> {{ qtd }}ml
+        <ion-button expand="block" color="primary" (click)="adicionarAgua(100)">+ 100ML</ion-button>
+        <ion-button expand="block" color="primary" (click)="adicionarAgua(250)">+ 250ML</ion-button>
+        <ion-button expand="block" color="primary" (click)="adicionarAgua(500)">+ 500ML</ion-button>
+      </div>
+      <div class="btn-row">
+        <ion-button expand="block" color="warning" (click)="removerAgua(50)">
+          - 50ML
+        </ion-button>
+        <ion-button *ngIf="!confirmandoLimpar" expand="block" color="danger" (click)="limparAgua()">
+          Limpar <ion-icon name="trash"></ion-icon>
+        </ion-button>
+        <ion-button *ngIf="confirmandoLimpar" expand="block" color="danger" (click)="limparAgua()">
+          Confirmar Limpar
+        </ion-button>
+        <ion-button *ngIf="confirmandoLimpar" expand="block" color="medium" (click)="cancelarLimpar()">
+          Voltar
         </ion-button>
       </div>
-
-      <ion-button expand="block" color="warning" (click)="removerAgua(250)">
-        - 250ml <ion-icon name="trash"></ion-icon>
-      </ion-button>
     </ion-card-content>
   </ion-card>
 

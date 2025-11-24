@@ -31,10 +31,10 @@
     <div class="meta-label">Meta de passos</div>
     <div class="meta-controls">
       <ng-container *ngIf="!metaEditing; else editBlock">
-        <div class="meta-pill scrollable" (click)="enableMetaEdit()" title="Clique para editar">
+        <div class="meta-pill meta-editable" (click)="enableMetaEdit()" title="Clique para editar">
           {{ metaPassos }}
         </div>
-        <button class="save-meta" (click)="enableMetaEdit()">Editar</button>
+        <button class="save-meta" style="display:none" (click)="testStep()" title="Adicionar um passo de teste">Adicionar passo (teste)</button>
       </ng-container>
       <ng-template #editBlock>
         <input id="meta-input" type="number" [(ngModel)]="metaPassos" (keyup.enter)="saveAndClose()" (blur)="saveAndClose()" />
@@ -51,5 +51,12 @@
     <div class="progress-label">{{ ((data.passosEstimados / metaPassos) * 100) | number:'1.0-0' }}% da meta</div>
   </div>
 
-
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-button expand="block" size="large" color="danger" (click)="testStep()" style="font-size:1.2em; margin: 16px 0;">
+      Teste passo (teste)
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

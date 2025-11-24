@@ -2,11 +2,12 @@ import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonMenuButton, IonSegment, IonSegmentButton, IonIcon, IonList, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonItem, IonThumbnail, IonButton, IonSpinner } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonMenuButton, IonSegment, IonSegmentButton, IonIcon, IonList, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonItem, IonThumbnail, IonSpinner } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { barbell, basket, call, globe, heart, home, man, person, pin, star, trash } from 'ionicons/icons';
 import { SheetsService, MenuItem } from '../../services/sheets.service';
 import { ProfileSyncService } from '../../services/profile-sync.service';
+import { ToastController } from '@ionic/angular';
 
 
 @Component({
@@ -14,15 +15,22 @@ import { ProfileSyncService } from '../../services/profile-sync.service';
   templateUrl: './cardapio.page.html',
   styleUrls: ['./cardapio.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonMenuButton, IonSegment, IonSegmentButton, IonIcon, IonList, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonItem, IonThumbnail, IonButton, IonSpinner]
+  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonMenuButton, IonSegment, IonSegmentButton, IonIcon, IonList, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonItem, IonThumbnail, IonSpinner]
 })
 export class CardapioPage implements OnInit {
   private readonly sheets = inject(SheetsService);
   private readonly route = inject(ActivatedRoute);
   private readonly profileSync = inject(ProfileSyncService);
+  private readonly toastCtrl = inject(ToastController);
 
   constructor() {
     addIcons({ man, barbell, heart, star });
+  }
+
+  // Create a slug/id from a title string (lowercase, alphanumerics and dashes)
+  private slugify(text?: string): string {
+    const t = (text || '').toString().trim().toLowerCase();
+    return t.replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || `item-${Math.random().toString(36).slice(2,8)}`;
   }
 
   escolhar = 'ganhar';
@@ -85,9 +93,15 @@ export class CardapioPage implements OnInit {
       next: items => {
         // keep master list to avoid duplications when rebuilding favorites
         this.allItems = items.slice();
-        // group by category
+        // Ensure every item has a stable id (slugified title) so local favorites can be tracked
+        this.allItems.forEach(i => {
+          if (!i.id || i.id.toString().trim() === '') {
+            i.id = this.slugify(i.title || (i.meal || 'item'));
+          }
+        });
+        // group by category (use this.allItems which has ensured ids)
         this.menuByCategory = {};
-        items.forEach(i => {
+        this.allItems.forEach(i => {
           const cat = (i.category || 'other').toLowerCase();
           if (!this.menuByCategory[cat]) this.menuByCategory[cat] = [];
           this.menuByCategory[cat].push(i);
@@ -104,9 +118,14 @@ export class CardapioPage implements OnInit {
         // Ensure 'favoritos' is first in categories
         if (!this.categories.includes('favoritos')) this.categories.unshift('favoritos');
 
-        // default selection: prefer 'ganhar' if present, otherwise keep current or first
-        if (this.categories.includes('ganhar')) this.escolhar = 'ganhar';
-        else if (this.categories.length && !this.escolhar) this.escolhar = this.categories[0];
+        // default selection: always prefer 'favoritos' if available, otherwise fall back to 'ganhar' or first
+        if (this.categories.includes('favoritos')) {
+          this.escolhar = 'favoritos';
+        } else if (this.categories.includes('ganhar')) {
+          this.escolhar = 'ganhar';
+        } else if (this.categories.length && !this.escolhar) {
+          this.escolhar = this.categories[0];
+        }
         // If a specific id was requested via query params, open it
         // If an id was requested, prefer matching by id. Otherwise try title match (case-insensitive).
         if (this.openItemId || this.openItemTitle) {
@@ -141,12 +160,15 @@ export class CardapioPage implements OnInit {
     return false;
   }
 
-  toggleLocalFavorite(item: MenuItem) {
+  async toggleLocalFavorite(item: MenuItem) {
     if (!item || !item.id) return;
+    let added = false;
     if (this.localFavorites.has(item.id)) {
       this.localFavorites.delete(item.id);
+      added = false;
     } else {
       this.localFavorites.add(item.id);
+      added = true;
     }
     this.saveLocalFavorites();
     // rebuild favorites category
@@ -154,6 +176,19 @@ export class CardapioPage implements OnInit {
     this.menuByCategory['favoritos'] = this.favorites.slice();
     // notify profile sync service to persist local changes (supports offline)
     try { this.profileSync.syncLocalStorageToServer(); } catch(e) { console.warn('ProfileSync notify failed', e); }
+
+    // Só mostra toast se salvou localmente (não apenas sync cloud)
+    if (!navigator.onLine) {
+      try {
+        const title = item.title || 'receita';
+        const msg = added ? `Favorito adicionado: ${title}` : `Favorito removido: ${title}`;
+        const color = added ? 'success' : 'medium';
+        const t = await this.toastCtrl.create({ message: msg, duration: 1800, color });
+        await t.present();
+      } catch (e) {
+        console.warn('Failed to present favorite toast', e);
+      }
+    }
   }
 
   // true only for local favorites (used to color the star)
@@ -161,6 +196,24 @@ export class CardapioPage implements OnInit {
     if (!item) return false;
     if (!item.id) return false;
     return this.localFavorites.has(item.id);
+  }
+
+  // IDs of items currently animating the star -> yellow glow before switching to tag
+  animatingFavorites = new Set<string>();
+
+  // Called when user taps the star to favorite an item. We animate then let the normal
+  // favorite state (saved to localFavorites) show the tag.
+  handleStarClick(item: MenuItem) {
+    if (!item || !item.id) return;
+    const id = item.id;
+    // mark as animating so star stays visible and glows
+    this.animatingFavorites.add(id);
+    // toggle favorite (will add to localFavorites)
+    this.toggleLocalFavorite(item);
+    // after animation, remove from animating set so star disappears and tag appears
+    setTimeout(() => {
+      this.animatingFavorites.delete(id);
+    }, 600);
   }
 
   // Helper to split the composed description into its parts: ingredientes, receita, macros

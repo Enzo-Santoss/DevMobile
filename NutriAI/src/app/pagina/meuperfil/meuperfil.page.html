@@ -48,7 +48,7 @@
   </ion-toolbar>
 
   <div class="cardd">
-    <ion-card>
+    <ion-card [ngClass]="{'objetivo-selecionado': profileForm.value.objetivo === 'ganhar'}">
       <ion-card-header>
         <ion-card-title>Ganhar Massa</ion-card-title>
         <ion-card-subtitle>Aumentar peso e músculos</ion-card-subtitle>
@@ -57,7 +57,7 @@
         <ion-button fill="clear" (click)="profileForm.patchValue({ objetivo: 'ganhar' })">Ganhar</ion-button>
     </ion-card>
 
-    <ion-card>
+    <ion-card [ngClass]="{'objetivo-selecionado': profileForm.value.objetivo === 'perder'}">
       <ion-card-header>
         <ion-card-title>Perder Peso</ion-card-title>
         <ion-card-subtitle>Reduzir gordura corporal</ion-card-subtitle>
@@ -65,9 +65,8 @@
       </ion-card-header>
       <ion-button fill="clear" (click)="profileForm.patchValue({ objetivo: 'perder' })">Perder</ion-button>
     </ion-card>
-  
 
-    <ion-card >
+    <ion-card [ngClass]="{'objetivo-selecionado': profileForm.value.objetivo === 'manter'}">
       <ion-card-header>
         <ion-card-title>Manter Peso</ion-card-title>
         <ion-card-subtitle>Nutrição personalizadas  </ion-card-subtitle>

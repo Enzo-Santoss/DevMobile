@@ -58,6 +58,8 @@ register();
   providers: [],
 })
 export class HomePage implements OnInit {
+    profileNome: string | null = null;
+    profileEmailUser: string | null = null;
   private readonly authService = inject(AuthService);
   private readonly sheets = inject(SheetsService);
   private readonly router = inject(Router);
@@ -139,6 +141,22 @@ export class HomePage implements OnInit {
       const m = localStorage.getItem('hidratacao_meta');
       if (c) this.hidratacaoConsumo = Number(c) || this.hidratacaoConsumo;
       if (m) this.hidratacaoMeta = Number(m) || this.hidratacaoMeta;
+      // Load nome from profile in localStorage if available
+      const profileRaw = localStorage.getItem('profile');
+      if (profileRaw) {
+        try {
+          const profile = JSON.parse(profileRaw);
+          if (profile && typeof profile.nome === 'string' && profile.nome.trim().length > 0) {
+            this.profileNome = profile.nome.trim();
+          }
+          // Processa email sem domínio (remove tudo após o último @)
+          if (profile && typeof profile.email === 'string' && profile.email.includes('@')) {
+            const email = profile.email;
+            const atIdx = email.lastIndexOf('@');
+            this.profileEmailUser = atIdx > 0 ? email.substring(0, atIdx) : email;
+          }
+        } catch (e) {}
+      }
     } catch (e) {}
 
     // optional hydration debug

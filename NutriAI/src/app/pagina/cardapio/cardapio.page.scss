@@ -3,7 +3,7 @@
 }
 
 :host {
-  --ion-background-color: #2f2f2f;
+  background-color: #2f2f2f;
 }
 
 .recipe-item {
@@ -26,8 +26,10 @@
 .recipe-title {
   margin: 0;
   font-size: 24px;
-  color: #ffffff;
   font-weight: 700;
+}
+ion-icon { 
+  color: #f44336;
 }
 
 .recipe-title.clickable { cursor: pointer; }
@@ -58,7 +60,6 @@
 }
 
 .recipe-desc {
-  color: #d1d1d1;
   white-space: pre-wrap;
 }
 
@@ -75,20 +76,17 @@
 
 .recipe-columns h4{
   margin: 0 0 6px 0;
-  color: #ffffff;
   font-size: 14px;
   font-weight: 700;
 }
 
 .recipe-columns h5{
   margin: 8px 0 4px 0;
-  color: #dcdcdc;
   font-size: 13px;
 }
 
 .recipe-macros-summary{
   margin-top: 8px;
-  color: #bdbdbd;
   font-size: 13px;
 }
 
@@ -98,12 +96,21 @@
   border-top: 1px solid rgba(255,255,255,0.04);
 }
 
-.recipe-full-macros h5{ margin: 0 0 6px 0; color:#ffffff; font-size:14px }
+.recipe-full-macros h5{ margin: 0 0 6px 0; font-size:14px }
 
 .recipe-actions {
   display: flex;
   align-items: center;
 }
+
+.star-btn{ background:transparent; border:none; padding:6px; display:inline-flex; align-items:center }
+.star-btn ion-icon{ font-size:22px }
+.star-btn ion-icon.star-blue{ color: #2196f3; filter: drop-shadow(0 0 0 rgba(0,0,0,0)); }
+.star-btn ion-icon.star-anim{ color: #ffeb3b; text-shadow: 0 0 8px rgba(255,235,59,0.9); transform: scale(1.2); transition: transform 0.2s ease; }
+
+.fav-pill.sheet{ background:#2dd55b }
+.fav-pill.local{ background:#2196f3 }
+.fav-pill.clickable{ cursor:pointer }
 
 ion-thumbnail img {
   width: 120px;

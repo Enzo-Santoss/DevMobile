@@ -70,6 +70,14 @@ export class MeuperfilPage {
             objetivo: data['objetivo'] ?? this.profileForm.value.objetivo,
             nivelAtividade: data['nivelAtividade'] ?? this.profileForm.value.nivelAtividade
           });
+          // Save profile name and other info to localStorage for home page
+          try {
+            const profileToStore = {
+              nome: data['nome'] ?? this.profileForm.value.nome,
+              email: data['email'] ?? this.profileForm.value.email
+            };
+            localStorage.setItem('profile', JSON.stringify(profileToStore));
+          } catch (e) { /* ignore */ }
           // restore backup values into localStorage so app picks them up
           try {
             if (data['localFavorites']) {
@@ -109,14 +117,8 @@ export class MeuperfilPage {
       if (typeof hidratacaoMeta !== 'undefined' && !isNaN(hidratacaoMeta)) fullPayload.hidratacaoMeta = hidratacaoMeta;
 
       const savedToServer = await this.profileSync.saveProfilePayload(fullPayload);
-      if (savedToServer === true) {
-        const t = await this.toastCtrl.create({ message: 'Perfil salvo no servidor.', duration: 2000, color: 'success' });
-        await t.present();
-      } else if (savedToServer === false) {
-        const t = await this.toastCtrl.create({ message: 'Offline: perfil salvo localmente. Será enviado ao reconectar.', duration: 3500, color: 'warning' });
-        await t.present();
-      } else {
-        // undefined means no uid / saved to a general pending key
+      if (savedToServer === false || typeof savedToServer === 'undefined') {
+        // Só mostra toast se salvou localmente (offline ou sem uid)
         const t = await this.toastCtrl.create({ message: 'Perfil salvo localmente.', duration: 2500 });
         await t.present();
       }

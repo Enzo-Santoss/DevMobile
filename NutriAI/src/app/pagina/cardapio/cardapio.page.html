@@ -33,8 +33,8 @@
               <div class="recipe-header">
                 <h3 class="recipe-title clickable" (click)="toggleExpanded(item)">{{ item.title }}</h3>
                 <div class="recipe-tags">
-                  <span *ngIf="item.favorite" class="fav-pill">favorito da semana</span>
-                  <span *ngIf="!item.favorite && isFavorited(item) && !item.favorite" class="fav-pill local">favorito</span>
+                    <span *ngIf="item.favorite" class="fav-pill sheet">Favoritos da semana</span>
+                    <span *ngIf="!item.favorite && isLocalFavorited(item)" class="fav-pill local clickable" (click)="toggleLocalFavorite(item)">Favorito</span>
                 </div>
               </div>
               <div *ngIf="getParts(item).macros && !isExpanded(item)" class="recipe-macros-summary">
@@ -60,9 +60,11 @@
             </div>
 
             <div class="recipe-actions">
-              <ion-button fill="clear" (click)="toggleLocalFavorite(item)" title="Marcar/Desmarcar favorito">
-                <ion-icon [name]="isLocalFavorited(item) ? 'star' : 'star-outline'" slot="icon-only" [class.favorited]="isLocalFavorited(item)"></ion-icon>
-              </ion-button>
+              <div *ngIf="(!isFavorited(item) || (item.id ? animatingFavorites.has(item.id) : false))">
+                <button class="star-btn" (click)="handleStarClick(item)" aria-label="Favoritar">
+                  <ion-icon name="star" [class.star-blue]="(item.id ? !animatingFavorites.has(item.id) : true)" [class.star-anim]="(item.id ? animatingFavorites.has(item.id) : false)"></ion-icon>
+                </button>
+              </div>
             </div>
           </ion-item>
         </ion-list>

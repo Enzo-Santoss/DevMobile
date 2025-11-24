@@ -115,6 +115,16 @@ export class TrackerService {
       passosEstimados: passos,
       caloriasKcal: calorias,
     });
+    // persist latest passosEstimados to localStorage so it can be synced to cloud
+    try { localStorage.setItem('passosEstimados', String(passos)); } catch (e) { /* ignore */ }
+  }
+
+  // For testing: increment the tracked distance by one average step
+  // This simulates one step being taken and updates observers.
+  public addTestStep(count = 1) {
+    if (count <= 0) return;
+    this.currentTotalDistance += this.COMPRIMENTO_PASSADA_M * count;
+    this.updateActivityData();
   }
 
   // A FÓRMULA DE HAVERSINE COMPLETA para calcular a distância

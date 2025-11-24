@@ -9,8 +9,25 @@ export class ProfileSyncService {
   private uid: string | undefined;
 
   constructor() {
-    // keep current uid updated
-    this.auth.user$.subscribe(u => { this.uid = u?.uid; });
+    // Sync when app loads (if logged in)
+    setTimeout(() => {
+      this.syncLocalStorageToServer().catch(() => {});
+    }, 500);
+
+    // Sync when user logs in
+    this.auth.user$.subscribe(async u => {
+      const prev = this.uid;
+      this.uid = u?.uid;
+      if (this.uid && this.uid !== prev) {
+        try { await this.uploadPendingForCurrentUser(); } catch(e){}
+        try { await this.syncLocalStorageToServer(); } catch(e){}
+      }
+    });
+
+    // Sync when app is closed or page is hidden
+    window.addEventListener('beforeunload', () => {
+      this.syncLocalStorageToServer();
+    });
 
     // When connectivity is restored, attempt upload
     window.addEventListener('online', () => {
@@ -54,11 +71,24 @@ export class ProfileSyncService {
     const metaPassos = metaPassosRaw ? Number(metaPassosRaw) : undefined;
     const hidratacaoMetaRaw = localStorage.getItem('hidratacao_meta');
     const hidratacaoMeta = hidratacaoMetaRaw ? Number(hidratacaoMetaRaw) : undefined;
+    const hidratacaoConsumoRaw = localStorage.getItem('hidratacao_consumo');
+    const hidratacaoConsumo = hidratacaoConsumoRaw ? Number(hidratacaoConsumoRaw) : undefined;
+    const passosEstimadosRaw = localStorage.getItem('passosEstimados');
+    const passosEstimados = passosEstimadosRaw ? Number(passosEstimadosRaw) : undefined;
 
     const payload: any = { ...extra };
     if (Array.isArray(localFav) && localFav.length) payload.localFavorites = localFav;
     if (typeof metaPassos !== 'undefined' && !isNaN(metaPassos)) payload.metaPassos = metaPassos;
     if (typeof hidratacaoMeta !== 'undefined' && !isNaN(hidratacaoMeta)) payload.hidratacaoMeta = hidratacaoMeta;
+    if (typeof hidratacaoConsumo !== 'undefined' && !isNaN(hidratacaoConsumo)) payload.hidratacaoConsumo = hidratacaoConsumo;
+    if (typeof passosEstimados !== 'undefined' && !isNaN(passosEstimados)) payload.passosEstimados = passosEstimados;
+
+    // Salvar histórico de hidratação
+    try {
+      const hidratacaoLogRaw = localStorage.getItem('hidratacao_log');
+      const hidratacaoLog = hidratacaoLogRaw ? JSON.parse(hidratacaoLogRaw) : [];
+      if (Array.isArray(hidratacaoLog) && hidratacaoLog.length) payload.hidratacaoLog = hidratacaoLog;
+    } catch (e) { /* ignore */ }
 
     await this.saveProfilePayload(payload);
   }

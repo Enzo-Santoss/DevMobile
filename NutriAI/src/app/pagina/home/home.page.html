@@ -7,7 +7,15 @@
 
 <ion-content class="home-content">
   <div class="welcome">
-    <h2 *ngIf="(user$ | async) as user; else anon">Bem vindo, {{ user.displayName || user.email }}</h2>
+    <ng-container *ngIf="(user$ | async) as user; else anon">
+      <h2 *ngIf="profileNome; else noProfileNome">Bem vindo, {{ profileNome }}</h2>
+      <ng-template #noProfileNome>
+        <h2 *ngIf="profileEmailUser; else fallbackEmail">Bem vindo, {{ profileEmailUser }}</h2>
+        <ng-template #fallbackEmail>
+          <h2>Bem vindo, {{ user.displayName || (user.email ? (user.email.substring(0, user.email.lastIndexOf('@'))) : '') }}</h2>
+        </ng-template>
+      </ng-template>
+    </ng-container>
     <ng-template #anon>
       <h2>Bem vindo ao NutriAI</h2>
     </ng-template>

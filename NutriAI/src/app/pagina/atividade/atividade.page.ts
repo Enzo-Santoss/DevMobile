@@ -35,7 +35,7 @@ export class AtividadePage implements OnInit {
 import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonMenuButton, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonMenuButton, IonTitle, IonToolbar, IonFooter, IonButton } from '@ionic/angular/standalone';
 import { Observable, Subscription } from 'rxjs';
 import { Geolocation } from '@capacitor/geolocation';
 import { ToastController, PickerController } from '@ionic/angular';
@@ -49,7 +49,7 @@ import { ProfileSyncService } from '../../services/profile-sync.service';
   templateUrl: './atividade.page.html',
   styleUrls: ['./atividade.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonMenuButton]
+  imports: [IonContent, IonHeader, IonTitle, IonToolbar, IonFooter, IonButton, CommonModule, FormsModule, IonMenuButton]
 })
 export class AtividadePage implements OnInit, OnDestroy {
   // Variável reativa para expor os dados para o HTML (usando o | async pipe)
@@ -75,6 +75,7 @@ export class AtividadePage implements OnInit, OnDestroy {
 
   // Meta de passos configurável pelo usuário
   metaPassos: number = 10000;
+  
   // marca para evitar toasts repetidos quando a meta já foi atingida
   private metaReachedAlready = false;
   private atividadeSub?: Subscription;
@@ -106,7 +107,7 @@ export class AtividadePage implements OnInit, OnDestroy {
         const percent = this.metaPassos > 0 ? (passos / this.metaPassos) * 100 : 0;
         if (percent >= 100 && !this.metaReachedAlready) {
           this.metaReachedAlready = true;
-          this.presentToast('Parabéns! Meta atingida!', 3500);
+          if (!navigator.onLine) this.presentToast('Parabéns! Meta atingida!', 3500);
         }
         if (percent < 100 && this.metaReachedAlready) {
           // reset para permitir novo toast quando meta for novamente atingida
@@ -116,6 +117,7 @@ export class AtividadePage implements OnInit, OnDestroy {
         console.warn('Erro ao processar progresso da meta', e);
       }
     });
+    // no-op for submeta (removed)
     
     // ⚠️ Removido o código de acesso ao token, pois usaremos o Capacitor
   }
@@ -166,18 +168,34 @@ export class AtividadePage implements OnInit, OnDestroy {
       localStorage.setItem('metaPassos', String(v));
       // ao salvar, sair do modo edição
       this.metaEditing = false;
-      this.presentToast('Meta salva com sucesso');
+      if (!navigator.onLine) this.presentToast('Meta salva com sucesso');
       // attempt to sync backup to server (offline-aware)
       try { this.profileSync.syncLocalStorageToServer(); } catch (e) { console.warn('ProfileSync sync failed', e); }
     } catch (e) {
       console.warn('Falha ao salvar metaPassos', e);
-      this.presentToast('Falha ao salvar a meta');
+      if (!navigator.onLine) this.presentToast('Falha ao salvar a meta');
+    }
+  }
+
+  
+  // Test helper: add one simulated step (increments distance by one passo)
+  testStep() {
+    try {
+      this.trackerService.addTestStep(1);
+      // quick feedback
+      if (!navigator.onLine) this.presentToast('Passo adicionado (teste)', 800);
+    } catch (e) {
+      console.warn('Failed to add test step', e);
     }
   }
 
   enableMetaEdit() {
-    // fallback to picker on mobile — present picker wheel
-    this.showMetaPicker();
+    // Sempre ativa input editável, independente de picker
+    this.metaEditing = true;
+    setTimeout(() => {
+      const el = document.getElementById('meta-input') as HTMLInputElement | null;
+      if (el) el.focus();
+    }, 50);
   }
 
   saveAndClose() {
@@ -212,34 +230,43 @@ export class AtividadePage implements OnInit, OnDestroy {
       const d3 = Math.floor((current / 1000) % 10);
       const d4 = Math.floor((current / 10000) % 10);
 
-      const picker = await this.pickerCtrl.create({
-        columns: [
-          { name: 'd4', options: digits.map(n => ({ text: String(n), value: n, selected: n === d4 })) },
-          { name: 'd3', options: digits.map(n => ({ text: String(n), value: n, selected: n === d3 })) },
-          { name: 'd2', options: digits.map(n => ({ text: String(n), value: n, selected: n === d2 })) },
-          { name: 'd1', options: digits.map(n => ({ text: String(n), value: n, selected: n === d1 })) },
-          { name: 'd0', options: digits.map(n => ({ text: String(n), value: n, selected: n === d0 })) }
-        ],
-        buttons: [
-          { text: 'Cancelar', role: 'cancel' },
-          {
-            text: 'OK',
-            handler: (selected: any) => {
-              const d4v = Number(selected?.d4?.value ?? 0);
-              const d3v = Number(selected?.d3?.value ?? 0);
-              const d2v = Number(selected?.d2?.value ?? 0);
-              const d1v = Number(selected?.d1?.value ?? 0);
-              const d0v = Number(selected?.d0?.value ?? 0);
-              const val = d4v*10000 + d3v*1000 + d2v*100 + d1v*10 + d0v;
-              const final = Math.max(100, val);
-              this.metaPassos = final;
-              this.saveMeta();
+      // Só tenta abrir picker se disponível (mobile). Se não, ativa input editável.
+      if (typeof this.pickerCtrl?.create === 'function') {
+        const picker = await this.pickerCtrl.create({
+          columns: [
+            { name: 'd4', options: digits.map(n => ({ text: String(n), value: n, selected: n === d4 })) },
+            { name: 'd3', options: digits.map(n => ({ text: String(n), value: n, selected: n === d3 })) },
+            { name: 'd2', options: digits.map(n => ({ text: String(n), value: n, selected: n === d2 })) },
+            { name: 'd1', options: digits.map(n => ({ text: String(n), value: n, selected: n === d1 })) },
+            { name: 'd0', options: digits.map(n => ({ text: String(n), value: n, selected: n === d0 })) }
+          ],
+          buttons: [
+            { text: 'Cancelar', role: 'cancel' },
+            {
+              text: 'OK',
+              handler: (selected: any) => {
+                const d4v = Number(selected?.d4?.value ?? 0);
+                const d3v = Number(selected?.d3?.value ?? 0);
+                const d2v = Number(selected?.d2?.value ?? 0);
+                const d1v = Number(selected?.d1?.value ?? 0);
+                const d0v = Number(selected?.d0?.value ?? 0);
+                const val = d4v*10000 + d3v*1000 + d2v*100 + d1v*10 + d0v;
+                const final = Math.max(100, val);
+                this.metaPassos = final;
+                this.saveMeta();
+              }
             }
-          }
-        ]
-      });
-
-      await picker.present();
+          ]
+        });
+        await picker.present();
+      } else {
+        // fallback: enable input edit
+        this.metaEditing = true;
+        setTimeout(() => {
+          const el = document.getElementById('meta-input') as HTMLInputElement | null;
+          if (el) el.focus();
+        }, 50);
+      }
     } catch (e) {
       console.warn('Failed to present picker', e);
       // fallback: enable input edit
