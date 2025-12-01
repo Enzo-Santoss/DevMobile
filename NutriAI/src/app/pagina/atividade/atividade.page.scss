@@ -1,41 +1,26 @@
-.header{
-  padding-top: 16px;
-}
+.header{padding-top:16px}
+.activity-top{display:flex;justify-content:center;margin-bottom:16px}
 
-/* Styles for Atividade page step counter */
-.activity-top {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 16px;
-}
+.steps-card{display:flex;align-items:center;width:100%;max-width:920px;border-radius:10px;padding:18px;background:#2f2f2f}
 
-.steps-card {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  max-width: 920px;
-  border-radius: 10px;
-  padding: 18px;
-  background: #2f2f2f
-}
+.tracking-controls{display:flex;gap:8px;align-items:center;margin-left:12px}
 
-.steps-left {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding-right: 20px;
-}
+.status-column{display:flex;align-items:center;justify-content:flex-end;margin-left:auto}
+.status-column.status-right{align-items:flex-start;justify-content:flex-end}
+.status-badges{display:flex;flex-direction:column;gap:6px;margin-left:4px;align-items:flex-start}
+.status-badge{display:flex;align-items:center;gap:8px;font-size:11px;color:rgba(255,255,255,0.95);height:18px;justify-content:flex-start}
+.status-dot{width:10px;height:10px;border-radius:999px;border:1px solid rgba(0,0,0,0.25);display:inline-block}
+.status-dot.on{background:#2dd55b;box-shadow:0 0 6px #2dd55b55}
+.status-dot.off{background:#d62d32}
+.status-label{font-weight:700;letter-spacing:0.6px;color:rgba(255,255,255,0.9);font-size:11px;text-align:left}
 
-.steps-number {
-  font-size: 44px;
-  font-weight: 800;
-  line-height: 1;
-}
+.pedometer-toggle{display:flex;flex-direction:column;gap:6px;align-items:flex-end;margin-left:8px}
 
-.steps-label {
-  font-size: 13px;
-  margin-top: 6px;
-}
+.steps-left{display:flex;flex-direction:column;align-items:flex-start;padding-right:20px}
+
+.steps-number{font-size:44px;font-weight:800;line-height:1}
+
+.steps-label{font-size:13px;margin-top:6px}
 
 .steps-right {
   display: flex;
@@ -75,34 +60,30 @@
   font-size: 12px;
 }
 
-.section-title { margin-top: 8px; margin-bottom: 8px }
+.section-title{margin-top:8px;margin-bottom:8px}
 
-.meta-input{ display:flex; gap:8px; align-items:center; margin:12px 0 }
-.meta-input input{ padding:8px; border-radius:6px; border:1px solid rgba(255,255,255,0.06); background:transparent}
-.meta-input .save-meta{border:none; padding:8px 12px; border-radius:6px }
-.meta-pill {
-  padding: 8px 12px;
-  border-radius: 8px;
-  max-width: 280px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  background: var(--ion-color-light, #f4f4f4);
-  color: var(--ion-color-dark, #222);
-  border: 2px solid var(--ion-color-success, #2dd36f);
-  font-weight: bold;
-  font-size: 1.2em;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-  cursor: pointer;
-  transition: box-shadow 0.2s, border 0.2s;
-}
-.meta-pill.meta-editable:hover, .meta-pill.meta-editable:focus {
-  box-shadow: 0 4px 16px rgba(46, 204, 113, 0.15);
-  border: 2px solid var(--ion-color-primary, #3880ff);
-}
-.meta-pill.scrollable{ overflow-x:auto; -webkit-overflow-scrolling:touch }
+.meta-input{display:flex;gap:8px;align-items:center;margin:12px 0}
+.meta-input input{padding:8px;border-radius:6px;border:1px solid rgba(255,255,255,0.06);background:transparent}
+.meta-input .save-meta{border:none;padding:8px 12px;border-radius:6px}
+/* Small edit button sitting next to meta pill */
 
-.progress-wrap{ margin-top:12px }
-.progress-bar{ height:10px; border-radius:999px; overflow:hidden }
-.progress-fill{ height:100%; background:linear-gradient(90deg,#00c853,#2196f3); width:0 }
-.progress-label{ margin-top:6px; font-size:13px }
+/* Inline edit input inside activity meta bar */
+.meta-edit-actions .save-meta{ border:none; padding:8px 10px; border-radius:6px }
+
+/* Visual meta bar similar to hydration */
+/* activity meta styles moved to global.scss to reduce the component css bundle size */
+
+.progress-wrap{margin-top:12px}
+.progress-bar{height:10px;border-radius:999px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#00c853,#2196f3);width:0}
+.progress-label{margin-top:6px;font-size:13px}
+
+.map-container{margin-top:12px;display:block;width:100%;max-width:920px;height:260px;border-radius:10px;overflow:hidden;border:1px solid rgba(0,0,0,0.08)}
+.leaflet-map{width:100%;height:100%;border:0}
+.map-caption{padding:6px 8px;font-size:12px;color:rgba(0,0,0,0.6)}
+
+.map-wait{display:flex;align-items:center;justify-content:center;height:160px;color:rgba(0,0,0,0.6)}
+.map-wait-inner{text-align:center;padding:18px;border-radius:8px}
+
+/* Title for map section centered and spaced from meta */
+.map-title{text-align:center;margin-top:18px;margin-bottom:8px;font-weight:600}

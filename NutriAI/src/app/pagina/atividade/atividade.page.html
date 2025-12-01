@@ -5,15 +5,24 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding" *ngIf="atividadeData$ | async as data">
+<ion-content class="ion-padding">
 
-  <section class="activity-top">
+  <ng-container *ngIf="atividadeData$ | async as data">
+    <section class="activity-top">
     <div class="steps-card">
+      <!-- status column will be placed on the right side (moved later in DOM) -->
       <div class="steps-left">
-        <div class="steps-number">{{ data.passosEstimados }}</div>
+        <div class="steps-number">
+          {{ data.passosEstimados }}
+          <small *ngIf="(atividadeData$ | async)?.stepsSource === 'pedometer'" style="display:block;font-size:10px;color:rgba(0,0,0,0.5);font-weight:600">(pedometro)</small>
+        </div>
         <div class="steps-label">passos</div>
       </div>
+      <div class="tracking-controls">
+        <!-- old tracking indicator removed; tracking-controls reserved for future controls -->
+      </div>
       <div class="steps-right">
+        <div *ngIf="(atividadeData$ | async)?.pedometerSteps" style="font-size:12px;color:rgba(0,0,0,0.6);margin-bottom:6px">Pedometer: {{ (atividadeData$ | async)?.pedometerSteps }} passos</div>
         <div class="metric">
           <div class="metric-value">{{ (data.distanciaMts / 1000) | number:'1.2-2' }} km</div>
           <div class="metric-label">distância</div>
@@ -22,33 +31,89 @@
           <div class="metric-value">{{ data.caloriasKcal | number:'1.0-0' }} kcal</div>
           <div class="metric-label">calorias</div>
         </div>
+        <!-- RIGHT: status column (moved to the right end of .steps-card) -->
+        <div class="status-column status-right">
+          <div class="status-badges" aria-hidden="true">
+            <div class="status-badge" [title]="isOnline ? 'Conexão OK' : 'Sem conexão'">
+              <span class="status-dot" [ngClass]="{on: isOnline, off: !isOnline}"></span>
+              <div class="status-label">CONEXÃO</div>
+            </div>
+            <div class="status-badge" [title]="gpsActive ? 'GPS ativo' : 'GPS inativo'">
+              <span class="status-dot" [ngClass]="{on: gpsActive, off: !gpsActive}"></span>
+              <div class="status-label">GPS</div>
+            </div>
+            <div class="status-badge" [title]="(pedometerAvailable && usePedometer) ? 'Pedômetro ativo' : 'Pedômetro inativo'">
+              <span class="status-dot" [ngClass]="{on: (pedometerAvailable && usePedometer), off: !(pedometerAvailable && usePedometer)}"></span>
+              <div class="status-label">PEDÔMETRO</div>
+            </div>
+          </div>
+          <div class="pedometer-toggle">
+            <ion-toggle *ngIf="pedometerAvailable" [(ngModel)]="usePedometer" (ionChange)="toggleUsePedometer()" color="primary"></ion-toggle>
+          </div>
+        </div>
       </div>
     </div>
-  </section>
+    </section>
 
-  <!-- Meta input (integrated into steps card) -->
-  <div class="meta-area">
-    <div class="meta-label">Meta de passos</div>
-    <div class="meta-controls">
-      <ng-container *ngIf="!metaEditing; else editBlock">
-        <div class="meta-pill meta-editable" (click)="enableMetaEdit()" title="Clique para editar">
-          {{ metaPassos }}
+  <!-- Meta visual (barra com preenchimento semelhante à hidratação) -->
+    <div class="atividade-meta-bar" role="button" tabindex="0" (click)="enableMetaEdit()" (keydown.enter)="enableMetaEdit()" title="Clique para editar meta">
+    <div class="atividade-meta-fill" [style.width.%]="(data.passosEstimados / (metaPassos || 1)) * 100"></div>
+    <div class="atividade-meta-content">
+      <ng-container *ngIf="!metaEditing; else inlineEdit">
+        <div class="meta-left">
+          <span [ngStyle]="{color: (data.passosEstimados >= metaPassos) ? '#2dd55b' : '#D62D32'}">{{ data.passosEstimados }}</span>
+          <span class="meta-sep">/</span>
+          <span>{{ metaPassos }}</span>
         </div>
-        <button class="save-meta" style="display:none" (click)="testStep()" title="Adicionar um passo de teste">Adicionar passo (teste)</button>
+        <div class="meta-right" aria-hidden="true"></div>
       </ng-container>
-      <ng-template #editBlock>
-        <input id="meta-input" type="number" [(ngModel)]="metaPassos" (keyup.enter)="saveAndClose()" (blur)="saveAndClose()" />
-        <button class="save-meta" (click)="saveAndClose()">Salvar</button>
+      <ng-template #inlineEdit>
+        <div class="meta-left inline-edit">
+          <input id="meta-inline-input" class="meta-inline-input" type="number" [(ngModel)]="metaPassos" (keyup.enter)="saveAndClose()" (blur)="saveAndClose()" />
+          <span class="meta-sep">/</span>
+          <span class="meta-total">{{ metaPassos }}</span>
+        </div>
+        <div class="meta-right" aria-hidden="true"></div>
       </ng-template>
     </div>
-  </div>
-
-  <!-- Progress bar towards meta -->
-  <div class="progress-wrap" *ngIf="metaPassos && metaPassos > 0">
-    <div class="progress-bar">
-      <div class="progress-fill" [style.width.%]="(data.passosEstimados / metaPassos) * 100"></div>
     </div>
-    <div class="progress-label">{{ ((data.passosEstimados / metaPassos) * 100) | number:'1.0-0' }}% da meta</div>
+  </ng-container>
+  
+  <!-- visual separator/title for the map (centered) -->
+  <h3 class="section-title map-title">Localização</h3>
+
+  <!-- Leaflet map: interactive route + current marker -->
+  <div class="map-container">
+    <ng-container *ngIf="leafletAvailable; else iframeFallback">
+      <div id="leafletMap" class="leaflet-map"></div>
+      <!-- center button: only visible when we have coords -->
+      <ion-button *ngIf="currentLat && currentLng" fill="solid" color="primary" size="small" style="position:absolute;right:10px;top:10px;z-index:4000" (click)="centerToCurrent()">Centralizar</ion-button>
+    </ng-container>
+    <ng-template #iframeFallback>
+      <iframe *ngIf="safeMapUrl" [src]="safeMapUrl" class="leaflet-map" frameborder="0"></iframe>
+    </ng-template>
+    <div class="map-caption" *ngIf="currentLat && currentLng">Lat: {{ currentLat | number:'1.6-6' }} — Lon: {{ currentLng | number:'1.6-6' }}</div>
+    <!-- DEBUG: map status for troubleshooting -->
+    <div class="map-debug" style="margin-top:6px;font-size:12px;color:rgba(0,0,0,0.55)">
+      Leaflet: {{ leafletAvailable }} — IframeFallback: {{ showIframeFallback }} — RJ fallback: {{ mapFallbackRJ }} — safeMapUrl: {{ !!safeMapUrl }}
+      <div style="margin-top:6px;font-size:12px">Fonte de passos: <strong>{{ (atividadeData$ | async)?.stepsSource ?? 'gps' }}</strong></div>
+    </div>
+    <div *ngIf="debugMode" style="margin-top:10px;background:rgba(0,0,0,0.03);padding:8px;border-radius:6px;font-size:12px;color:#111">
+      <div style="font-weight:700;margin-bottom:6px">DEBUG — diagnósticos do GPS</div>
+      <pre style="white-space:pre-wrap;font-size:11px;color:#222">{{ lastDiagnostics | json }}</pre>
+    </div>
+    <div class="map-wait" *ngIf="!currentLat && !currentLng">
+      <div class="map-wait-inner">
+          <div *ngIf="mapFallbackRJ">
+            <div style="font-weight:700;margin-bottom:6px">Sem sinal GPS — mostrando Rio de Janeiro como fallback</div>
+            <div style="font-size:13px;opacity:0.9">O aplicativo não conseguiu obter coordenadas. Enquanto isso, estamos mostrando o centro do Rio de Janeiro; conceda permissão de localização para centralizar no seu local.</div>
+          </div>
+          <div *ngIf="!mapFallbackRJ">
+            <div style="font-weight:700;margin-bottom:6px">Aguardando sinal GPS...</div>
+            <div style="font-size:13px;opacity:0.9">O aplicativo está rastreando, mas ainda não recebeu coordenadas válidas. Verifique GPS/permissões e aguarde alguns segundos.</div>
+          </div>
+        </div>
+    </div>
   </div>
 
 </ion-content>
